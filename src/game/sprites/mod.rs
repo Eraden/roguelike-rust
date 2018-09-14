@@ -1,10 +1,10 @@
-pub mod start_button;
-pub mod quit_button;
 pub mod female_deer_sprite;
+pub mod quit_button;
+pub mod start_button;
 
-use sdl2::rect::Rect;
-use game::main_renderer::MainRenderer;
 use game::app::WindowCanvas;
+use game::main_renderer::MainRenderer;
+use sdl2::rect::Rect;
 
 #[derive(Debug, Clone)]
 pub enum SpriteType {

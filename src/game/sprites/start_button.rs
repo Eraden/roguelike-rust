@@ -1,12 +1,12 @@
-use game::sprites::Sprite;
 use game::app::WindowCanvas;
 use game::main_renderer::MainRenderer;
-use sdl2::rect::Rect;
-use std::rc::Rc;
-use sdl2::render::Texture;
 use game::managers::FontDetails;
-use game::ui::render_text;
 use game::sprites::check_is_inside;
+use game::sprites::Sprite;
+use game::ui::render_text;
+use sdl2::rect::Rect;
+use sdl2::render::Texture;
+use std::rc::Rc;
 
 pub struct StartButtonSprite<'a> {
     pub text_texture: Rc<Texture<'a>>,
@@ -25,7 +25,8 @@ impl<'a> StartButtonSprite<'a> {
         };
 
         let background_texture: Rc<Texture<'a>> = {
-            main_renderer.texture_manager
+            main_renderer
+                .texture_manager
                 .load("./assets/button_background.png")
                 .unwrap()
         };
@@ -42,7 +43,7 @@ impl<'a> StartButtonSprite<'a> {
                 ((config.width / 2) - (background_width / 2)) as i32,
                 top - 5,
                 text_width,
-                90
+                90,
             ),
             background_texture,
             background_source: Rect::new(0, 0, 765, 296),
@@ -50,7 +51,7 @@ impl<'a> StartButtonSprite<'a> {
                 ((config.width / 2) - (background_width / 2)) as i32,
                 top,
                 background_width,
-                100
+                100,
             ),
         }
     }
@@ -64,18 +65,26 @@ impl<'a> Sprite<'a> for StartButtonSprite<'a> {
     fn update(&mut self, _ticks: i32) {}
 
     fn render(&self, canvas: &mut WindowCanvas, _main_renderer: &mut MainRenderer<'a, 'a>) {
-        canvas.copy_ex(
-            &self.background_texture,
-            Some(self.background_source), Some(self.background_dest),
-            0.0, None,
-            false, false,
-        ).unwrap();
+        canvas
+            .copy_ex(
+                &self.background_texture,
+                Some(self.background_source),
+                Some(self.background_dest),
+                0.0,
+                None,
+                false,
+                false,
+            ).unwrap();
 
-        canvas.copy_ex(
-            &self.text_texture,
-            Some(self.text_source), Some(self.text_dest),
-            0.0, None,
-            false, false,
-        ).unwrap();
+        canvas
+            .copy_ex(
+                &self.text_texture,
+                Some(self.text_source),
+                Some(self.text_dest),
+                0.0,
+                None,
+                false,
+                false,
+            ).unwrap();
     }
 }

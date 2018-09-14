@@ -9,4 +9,3 @@ fn main() {
     app.init();
     app.main_loop();
 }
-

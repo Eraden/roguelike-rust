@@ -1,8 +1,8 @@
 use game::config::Config;
 use game::managers::FontManager;
 use game::managers::TextureManager;
-use sdl2::ttf::Sdl2TtfContext;
 use sdl2::render::TextureCreator;
+use sdl2::ttf::Sdl2TtfContext;
 use sdl2::video::WindowContext;
 
 pub struct MainRenderer<'a, 'b> {
@@ -13,7 +13,11 @@ pub struct MainRenderer<'a, 'b> {
 }
 
 impl<'a, 'b> MainRenderer<'a, 'b> {
-    pub fn new(config: Config, font_context: &'a Sdl2TtfContext, texture_creator: &'b TextureCreator<WindowContext>) -> Self {
+    pub fn new(
+        config: Config,
+        font_context: &'a Sdl2TtfContext,
+        texture_creator: &'b TextureCreator<WindowContext>,
+    ) -> Self {
         MainRenderer {
             config,
             font_manager: FontManager::new(&font_context),

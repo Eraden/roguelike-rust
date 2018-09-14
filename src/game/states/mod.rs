@@ -1,11 +1,11 @@
-pub mod main_menu_state;
 pub mod first_map_state;
+pub mod main_menu_state;
 
-use game::main_renderer::MainRenderer;
 use game::app::WindowCanvas;
+use game::main_renderer::MainRenderer;
 
-use sdl2::event::Event;
 use game::events::UpdateResult;
+use sdl2::event::Event;
 
 pub trait State<'a> {
     fn update(&mut self, ticks: i32);

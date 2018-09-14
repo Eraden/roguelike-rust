@@ -1,11 +1,11 @@
-use game::sprites::Sprite;
-use game::sprites::start_button::*;
 use game::sprites::quit_button::*;
+use game::sprites::start_button::*;
+use game::sprites::Sprite;
 
-use game::main_renderer::MainRenderer;
-use game::states::State;
 use game::app::WindowCanvas;
 use game::events::UpdateResult;
+use game::main_renderer::MainRenderer;
+use game::states::State;
 
 use sdl2::event::Event;
 
@@ -18,7 +18,10 @@ impl<'a> MainMenuState<'a> {
     pub fn new(main_renderer: &mut MainRenderer<'a, 'a>) -> Self {
         let start_button = StartButtonSprite::new(main_renderer);
         let quit_button = QuitButtonSprite::new(main_renderer);
-        MainMenuState { start_button, quit_button }
+        MainMenuState {
+            start_button,
+            quit_button,
+        }
     }
 }
 
@@ -34,14 +37,13 @@ impl<'a> State<'a> for MainMenuState<'a> {
 
     fn handle_click(&mut self, event: &Event) -> UpdateResult {
         match *event {
-            Event::MouseButtonDown { x, y, .. } =>
-                if self.quit_button.is_inside(&x, &y) {
-                    UpdateResult::Stop
-                } else if self.start_button.is_inside(&x, &y) {
-                    UpdateResult::StartFirstMap
-                } else {
-                    UpdateResult::NoOp
-                },
+            Event::MouseButtonDown { x, y, .. } => if self.quit_button.is_inside(&x, &y) {
+                UpdateResult::Stop
+            } else if self.start_button.is_inside(&x, &y) {
+                UpdateResult::StartFirstMap
+            } else {
+                UpdateResult::NoOp
+            },
             _ => UpdateResult::NoOp,
         }
     }

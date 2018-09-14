@@ -1,13 +1,12 @@
-use game::sprites::Sprite;
-use game::main_renderer::MainRenderer;
 use game::app::WindowCanvas;
+use game::main_renderer::MainRenderer;
 use game::sprites::Animation;
+use game::sprites::Sprite;
 use sdl2::rect::Rect;
 use sdl2::render::Texture;
 use std::rc::Rc;
 
-pub struct DeerSprite<'a>
-{
+pub struct DeerSprite<'a> {
     pub texture: Rc<Texture<'a>>,
     pub frames_per_animation: i32,
     pub tile_size: i32,
@@ -47,11 +46,15 @@ impl<'a> Sprite<'a> for DeerSprite<'a> {
     }
 
     fn render(&self, canvas: &mut WindowCanvas, _main_renderer: &mut MainRenderer<'a, 'a>) {
-        canvas.copy_ex(
-            &self.texture,
-            Some(self.source), Some(self.dest),
-            0.0, None,
-            false, false,
-        ).unwrap();
+        canvas
+            .copy_ex(
+                &self.texture,
+                Some(self.source),
+                Some(self.dest),
+                0.0,
+                None,
+                false,
+                false,
+            ).unwrap();
     }
 }

@@ -4,33 +4,18 @@ use game::sprites::Sprite;
 use game::app::WindowCanvas;
 use game::events::UpdateResult;
 use game::main_renderer::MainRenderer;
-use game::sprites::Animation;
 use game::states::State;
 use sdl2::event::Event;
-use sdl2::rect::Rect;
 
 pub struct FirstMapState<'a> {
-    pub deers: Vec<DeerSprite<'a>>,
+    pub deers: Vec<FemaleDeerSprite<'a>>,
 }
 
 impl<'a> FirstMapState<'a> {
     pub fn new(main_renderer: &mut MainRenderer<'a, 'a>) -> Self {
         let mut state = FirstMapState { deers: Vec::new() };
 
-        let deer_texture = main_renderer
-            .texture_manager
-            .load("./assets/deer female calciumtrice.png")
-            .unwrap();
-
-        let female_deer = DeerSprite {
-            texture: deer_texture,
-            frames_per_animation: 5,
-            tile_size: 32,
-            source: Rect::new(0, 0, 32, 32),
-            dest: Rect::new(0, 0, 160, 160),
-            animation: Animation::Eating,
-            animation_step: 0,
-        };
+        let female_deer = FemaleDeerSprite::new(main_renderer);
         state.deers.push(female_deer);
         state
     }

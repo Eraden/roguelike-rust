@@ -6,7 +6,7 @@ use sdl2::rect::Rect;
 use sdl2::render::Texture;
 use std::rc::Rc;
 
-pub struct DeerSprite<'a> {
+pub struct FemaleDeerSprite<'a> {
     pub texture: Rc<Texture<'a>>,
     pub frames_per_animation: i32,
     pub tile_size: i32,
@@ -16,7 +16,24 @@ pub struct DeerSprite<'a> {
     pub animation_step: i32,
 }
 
-impl<'a> DeerSprite<'a> {
+impl<'a> FemaleDeerSprite<'a> {
+    pub fn new(main_renderer: &mut MainRenderer<'a, 'a>) -> Self {
+        let texture = main_renderer
+            .texture_manager
+            .load("./assets/textures/deer female calciumtrice.png")
+            .unwrap();
+
+        FemaleDeerSprite {
+            texture,
+            frames_per_animation: 5,
+            tile_size: 32,
+            source: Rect::new(0, 0, 32, 32),
+            dest: Rect::new(0, 0, 160, 160),
+            animation: Animation::Eating,
+            animation_step: 0,
+        }
+    }
+
     fn resolve_y(&self, animation: &Animation) -> i32 {
         match animation {
             Animation::Idle => 0,
@@ -36,7 +53,7 @@ impl<'a> DeerSprite<'a> {
     }
 }
 
-impl<'a> Sprite<'a> for DeerSprite<'a> {
+impl<'a> Sprite<'a> for FemaleDeerSprite<'a> {
     fn update(&mut self, ticks: i32) {
         let y = {
             let animation = &self.animation;

@@ -20,14 +20,14 @@ pub struct StartButtonSprite<'a> {
 impl<'a> StartButtonSprite<'a> {
     pub fn new(main_renderer: &mut MainRenderer<'a, 'a>) -> Self {
         let text_texture: Rc<Texture<'a>> = {
-            let font_details = FontDetails::new("./assets/Beyond Wonderland.ttf", 50);
+            let font_details = FontDetails::new("./assets/fonts/Beyond Wonderland.ttf", 50);
             render_text(&font_details, "Start", main_renderer)
         };
 
         let background_texture: Rc<Texture<'a>> = {
             main_renderer
                 .texture_manager
-                .load("./assets/button_background.png")
+                .load("./assets/textures/button_background.png")
                 .unwrap()
         };
 

@@ -7,7 +7,7 @@ use sdl2::keyboard::Keycode;
 use sdl2::mouse::MouseButton;
 use sdl2::pixels::Color;
 use sdl2::render::Canvas;
-use sdl2::video::{Window, WindowContext};
+use sdl2::video::{Window};
 use sdl2::EventPump;
 use sdl2::{Sdl, TimerSubsystem, VideoSubsystem};
 
@@ -25,7 +25,6 @@ pub struct App {
     pub video_subsystem: VideoSubsystem,
     pub canvas: WindowCanvas,
     pub config: Config,
-    pub done: bool,
 }
 
 pub enum AppState<'a> {
@@ -53,7 +52,6 @@ impl<'a> App {
             video_subsystem,
             canvas,
             config,
-            done: false,
         }
     }
 
@@ -73,10 +71,6 @@ impl<'a> App {
         let mut app_state: AppState = AppState::MainMenu(MainMenuState::new(&mut main_renderer));
 
         'running: loop {
-            if self.done {
-                break 'running;
-            }
-
             match self.handle_events(&mut event_pump, &mut app_state) {
                 UpdateResult::Stop => break 'running,
                 UpdateResult::StartFirstMap => {

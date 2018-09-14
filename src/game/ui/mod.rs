@@ -1,6 +1,5 @@
 use sdl2::render::Texture;
 use std::rc::Rc;
-use sdl2::render::TextureCreator;
 use game::managers::FontDetails;
 use sdl2::pixels::Color;
 use game::main_renderer::MainRenderer;

@@ -8,13 +8,10 @@ use sdl2::keyboard::Keycode;
 use sdl2::render::Canvas;
 use sdl2::video::{Window, WindowContext};
 use sdl2::pixels::Color;
-use sdl2::render::TextureCreator;
-use sdl2::ttf::Sdl2TtfContext;
 use sdl2::EventPump;
 use sdl2::mouse::MouseButton;
 
 use game::main_renderer::MainRenderer;
-use game::managers::{FontManager, TextureManager};
 use game::states::State;
 use game::states::main_menu_state::*;
 use game::states::first_map_state::*;
@@ -31,13 +28,23 @@ pub struct App {
     pub done: bool,
 }
 
+//pub struct AppState<'a> {
+//    pub main_menu: Option<MainMenuState<'a>>,
+//    pub first_map: Option<FirstMapState<'a>>,
+//}
+
+pub enum AppState<'a> {
+    MainMenu(MainMenuState<'a>),
+    FirstMap(FirstMapState<'a>),
+}
+
 impl<'a> App {
     pub fn new() -> Self {
         let config = Config::new();
 
         let sdl_context = sdl2::init().unwrap();
         let video_subsystem = sdl_context.video().unwrap();
-        let window = video_subsystem.window("Rouge - Rust", config.width, config.height)
+        let window = video_subsystem.window("Rogue - Rust", config.width, config.height)
             .position_centered()
             .opengl()
             .build()
@@ -54,7 +61,7 @@ impl<'a> App {
             video_subsystem,
             canvas,
             config,
-            done: false
+            done: false,
         }
     }
 
@@ -74,45 +81,57 @@ impl<'a> App {
             &font_context,
             &texture_creator,
         );
-        let mut current_state = MainMenuState::new(&mut main_renderer);
-        let mut _current_state = FirstMapState::new(&mut main_renderer);
+        let mut app_state: AppState = AppState::MainMenu(MainMenuState::new(&mut main_renderer));
+//        let mut current_state = MainMenuState::new(&mut main_renderer);
+//        app_state.main_menu = Some( MainMenuState::new(&mut main_renderer));
+//        let mut _current_state = FirstMapState::new(&mut main_renderer);
 
         'running: loop {
             if self.done {
-                break 'running
+                break 'running;
             }
 
-            match self.handle_events(&mut event_pump, &mut current_state) {
+            match self.handle_events(&mut event_pump, &mut app_state) {
                 UpdateResult::Stop =>
                     break 'running,
-                _ => {},
+                UpdateResult::StartFirstMap =>
+                    app_state = AppState::FirstMap(FirstMapState::new(&mut main_renderer)),
+                _ => {}
             }
 
             self.clear();
-            {
-                current_state.update(timer.ticks() as i32);
-                current_state.render(&mut self.canvas, &mut main_renderer);
-            }
+
+            match app_state {
+                AppState::MainMenu(ref mut menu) => {
+                    menu.update(timer.ticks() as i32);
+                    menu.render(&mut self.canvas, &mut main_renderer);
+                },
+                AppState::FirstMap(ref mut map) => {
+                    map.update(timer.ticks() as i32);
+                    map.render(&mut self.canvas, &mut main_renderer);
+                },
+            };
 
             self.present();
             ::std::thread::sleep(sleep_time);
         }
     }
 
-    fn handle_events(&mut self, event_pump: &mut EventPump, state: &mut State) -> UpdateResult {
-        let mut res = UpdateResult::NoOp;
-
+    fn handle_events(&mut self, event_pump: &mut EventPump, app_state: &mut AppState) -> UpdateResult {
         for event in event_pump.poll_iter() {
             match event {
                 Event::Quit { .. }
                 | Event::KeyDown { keycode: Some(Keycode::Escape), .. } =>
                     return UpdateResult::Stop,
-                Event::MouseButtonDown { mouse_btn: MouseButton::Left, ..  } =>
-                    return state.handle_click(&event),
-                _ => UpdateResult::NoOp,
+                Event::MouseButtonDown { mouse_btn: MouseButton::Left, .. } =>
+                        match app_state {
+                            AppState::MainMenu(state) => return state.handle_click(&event),
+                            AppState::FirstMap(state) => return state.handle_click(&event),
+                        }
+                _ => {},
             };
         }
-        res
+        UpdateResult::NoOp
     }
 
     fn present(&mut self) {

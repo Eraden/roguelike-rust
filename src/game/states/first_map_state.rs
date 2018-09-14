@@ -6,8 +6,6 @@ use sdl2::rect::Rect;
 use game::sprites::Animation;
 use game::states::State;
 use game::app::WindowCanvas;
-use game::app::App;
-use game::config::Config;
 use game::events::UpdateResult;
 use sdl2::event::Event;
 
@@ -55,11 +53,11 @@ impl<'a> State<'a> for FirstMapState<'a>
         }
     }
 
-    fn handle_click(&mut self, event: &Event) -> UpdateResult {
+    fn handle_click(&mut self, _event: &Event) -> UpdateResult {
         UpdateResult::NoOp
     }
 
-    fn handle_key_down(&mut self, event: &Event) -> UpdateResult {
+    fn handle_key_down(&mut self, _event: &Event) -> UpdateResult {
         UpdateResult::NoOp
     }
 }

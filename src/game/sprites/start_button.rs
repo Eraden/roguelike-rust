@@ -1,12 +1,12 @@
 use game::sprites::Sprite;
 use game::app::WindowCanvas;
 use game::main_renderer::MainRenderer;
-use game::sprites::Animation;
 use sdl2::rect::Rect;
 use std::rc::Rc;
 use sdl2::render::Texture;
 use game::managers::FontDetails;
 use game::ui::render_text;
+use game::sprites::check_is_inside;
 
 pub struct StartButtonSprite<'a> {
     pub text_texture: Rc<Texture<'a>>,
@@ -54,10 +54,14 @@ impl<'a> StartButtonSprite<'a> {
             ),
         }
     }
+
+    pub fn is_inside(&self, x: &i32, y: &i32) -> bool {
+        check_is_inside(x, y, &self.background_dest)
+    }
 }
 
 impl<'a> Sprite<'a> for StartButtonSprite<'a> {
-    fn update(&mut self, ticks: i32) {}
+    fn update(&mut self, _ticks: i32) {}
 
     fn render(&self, canvas: &mut WindowCanvas, _main_renderer: &mut MainRenderer<'a, 'a>) {
         canvas.copy_ex(

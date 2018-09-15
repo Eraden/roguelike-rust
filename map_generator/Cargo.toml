@@ -1,15 +1,12 @@
 [package]
-name = "roguelike"
+name = "map_generator"
 version = "0.1.0"
 authors = ["Adrian Wozniak <adrian.wozniak@ita-prog.pl>"]
 
 [dependencies]
 rand = "0.5"
+clap = "*"
 
 [dependencies.sdl2]
 version = "*"
 features = ["gfx", "image", "mixer", "ttf", "static-link", "bundled"]
-
-[workspace]
-members = ["map_generator"]
-default-members = []

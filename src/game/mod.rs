@@ -6,3 +6,4 @@ pub mod managers;
 pub mod sprites;
 pub mod states;
 pub mod ui;
+pub mod map;

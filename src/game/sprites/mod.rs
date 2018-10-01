@@ -1,6 +1,8 @@
 pub mod female_deer_sprite;
 pub mod quit_button;
 pub mod start_button;
+pub mod map_sprite;
+pub mod ground_tile;
 
 use game::app::WindowCanvas;
 use game::main_renderer::MainRenderer;
@@ -36,7 +38,11 @@ pub enum Animation {
 pub trait Sprite<'a> {
     fn update(&mut self, ticks: i32);
 
-    fn render(&self, canvas: &mut WindowCanvas, _main_renderer: &mut MainRenderer<'a, 'a>);
+    fn render(&mut self, canvas: &mut WindowCanvas, _main_renderer: &mut MainRenderer<'a, 'a>);
+}
+
+pub trait RenderPosition {
+    fn render_on(&mut self, x: &usize, y: &usize);
 }
 
 fn check_is_inside(x: &i32, y: &i32, rect: &Rect) -> bool {
@@ -45,4 +51,9 @@ fn check_is_inside(x: &i32, y: &i32, rect: &Rect) -> bool {
     let ys: i32 = rect.y();
     let ye: i32 = ys + rect.width() as i32;
     (xs..xe).contains(&x) && (ys..ye).contains(&y)
+}
+
+pub fn render_on(dest: &mut Rect, tile_size: &usize, x: &usize, y: &usize) {
+    dest.set_x((x * tile_size) as i32);
+    dest.set_y((y * tile_size) as i32);
 }

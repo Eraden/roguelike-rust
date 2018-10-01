@@ -64,7 +64,7 @@ impl<'a> StartButtonSprite<'a> {
 impl<'a> Sprite<'a> for StartButtonSprite<'a> {
     fn update(&mut self, _ticks: i32) {}
 
-    fn render(&self, canvas: &mut WindowCanvas, _main_renderer: &mut MainRenderer<'a, 'a>) {
+    fn render(&mut self, canvas: &mut WindowCanvas, _main_renderer: &mut MainRenderer<'a, 'a>) {
         canvas
             .copy_ex(
                 &self.background_texture,

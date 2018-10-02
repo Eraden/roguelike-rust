@@ -1,8 +1,10 @@
-pub mod female_deer_sprite;
-pub mod quit_button;
-pub mod start_button;
-pub mod map_sprite;
 pub mod ground_tile;
+pub mod female_deer_sprite;
+pub mod start_button;
+pub mod quit_button;
+pub mod map_sprite;
+pub mod map_sprite_layer;
+pub mod map_sprite_tile;
 
 use game::app::WindowCanvas;
 use game::main_renderer::MainRenderer;

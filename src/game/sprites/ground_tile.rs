@@ -1,4 +1,4 @@
-use game::map::*;
+use game::map::tile_type::*;
 use game::sprites::Sprite;
 use game::app::WindowCanvas;
 use game::main_renderer::MainRenderer;
@@ -13,6 +13,7 @@ pub struct GroundTile<'a> {
     pub source: Rect,
     pub dest: Rect,
     pub tile_size: i32,
+    pub render_width: i32,
 }
 
 impl<'a> GroundTile<'a> {
@@ -27,6 +28,7 @@ impl<'a> GroundTile<'a> {
             source: Rect::new(0, 0, 16, 16),
             dest: Rect::new(0, 0, main_renderer.config.render_tile.width, main_renderer.config.render_tile.height),
             tile_size: 16,
+            render_width: main_renderer.config.render_tile.width as i32,
         }
     }
 
@@ -60,9 +62,43 @@ impl<'a> GroundTile<'a> {
                 self.source.set_x(6 * self.tile_size);
                 self.source.set_y(6 * self.tile_size);
             }
-            _ => {
-                self.source.set_x(6 * self.tile_size);
+            // Pond
+            TileType::PondLeftTop => {
+                self.source.set_x(1 * self.tile_size);
                 self.source.set_y(6 * self.tile_size);
+            }
+            TileType::PondLeft => {
+                self.source.set_x(1 * self.tile_size);
+                self.source.set_y(7 * self.tile_size);
+            }
+            TileType::PondLeftBottom => {
+                self.source.set_x(1 * self.tile_size);
+                self.source.set_y(11 * self.tile_size);
+            }
+            TileType::PondBottom => {
+                self.source.set_x(2 * self.tile_size);
+                self.source.set_y(11 * self.tile_size);
+            }
+            TileType::PondRightBottom => {
+                self.source.set_x(6 * self.tile_size);
+                self.source.set_y(11 * self.tile_size);
+            }
+            TileType::PondRightTop => {
+                self.source.set_x(6 * self.tile_size);
+                self.source.set_y(10 * self.tile_size);
+            }
+            TileType::PondTop => {
+                self.source.set_x(7 * self.tile_size);
+                self.source.set_y(5 * self.tile_size);
+            }
+            TileType::PondWater => {
+                self.source.set_x(7 * self.tile_size);
+                self.source.set_y(4 * self.tile_size);
+            }
+
+            _ => {
+                self.source.set_x(8 * self.tile_size);
+                self.source.set_y(1 * self.tile_size);
             }
         }
     }
@@ -70,14 +106,12 @@ impl<'a> GroundTile<'a> {
 
 impl<'a> RenderPosition for GroundTile<'a> {
     fn render_on(&mut self, x: &usize, y: &usize) {
-        render_on(&mut self.dest, &(self.tile_size as usize), x, y);
+        render_on(&mut self.dest, &(self.render_width as usize), x, y);
     }
 }
 
 impl<'a> Sprite<'a> for GroundTile<'a> {
-    fn update(&mut self, _ticks: i32) {
-        //
-    }
+    fn update(&mut self, _ticks: i32) { () }
 
     fn render(&mut self, canvas: &mut WindowCanvas, _main_renderer: &mut MainRenderer<'a, 'a>) {
         canvas.copy_ex(

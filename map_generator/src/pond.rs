@@ -1,73 +1,52 @@
+use std::mem::replace;
+
 pub enum PondType {
     SquarePond,
 }
 
-pub fn put_pond(stream: &mut Vec<Vec<i32>>, pond_type: &PondType, x: i32, y: i32) {
+pub fn put_pond(stream: &mut Vec<Vec<i32>>, pond_type: &PondType, x: usize, y: usize) {
     match pond_type {
         PondType::SquarePond => {
             // X__
             // ___
             // ___
-            stream
-                .get_mut((y + 0) as usize)
-                .unwrap()
-                .insert((x + 0) as usize, 7);
+            put_tile(stream, x, y, 7);
             // ___
             // X__
             // ___
-            stream
-                .get_mut((y + 1) as usize)
-                .unwrap()
-                .insert((x + 0) as usize, 8);
+            put_tile(stream, x, y + 1, 8);
             // ___
             // ___
             // X__
-            stream
-                .get_mut((y + 2) as usize)
-                .unwrap()
-                .insert((x + 0) as usize, 9);
+            put_tile(stream, x, y + 2, 9);
             // ___
             // ___
             // _X_
-            stream
-                .get_mut((y + 2) as usize)
-                .unwrap()
-                .insert((x + 1) as usize, 10);
+            put_tile(stream, x + 1, y + 2, 10);
             // ___
             // ___
             // __X
-            stream
-                .get_mut((y + 2) as usize)
-                .unwrap()
-                .insert((x + 2) as usize, 11);
+            put_tile(stream, x + 2, y + 2, 11);
             // ___
             // __X
             // ___
-            stream
-                .get_mut((y + 1) as usize)
-                .unwrap()
-                .insert((x + 2) as usize, 12);
+            put_tile(stream, x + 2, y + 1, 12);
             // __X
             // ___
             // ___
-            stream
-                .get_mut((y + 0) as usize)
-                .unwrap()
-                .insert((x + 2) as usize, 13);
+            put_tile(stream, x + 2, y, 13);
             // _X_
             // ___
             // ___
-            stream
-                .get_mut((y + 0) as usize)
-                .unwrap()
-                .insert((x + 1) as usize, 14);
+            put_tile(stream, x + 1, y, 14);
             // ___
             // _X_
             // ___
-            stream
-                .get_mut((y + 1) as usize)
-                .unwrap()
-                .insert((x + 1) as usize, 15); // water
+            put_tile(stream, x + 1, y + 1, 15); // water
         }
     }
+}
+
+fn put_tile(stream: &mut Vec<Vec<i32>>, x: usize, y: usize, val: i32) {
+    replace(&mut stream.get_mut(y).unwrap()[x], val);
 }

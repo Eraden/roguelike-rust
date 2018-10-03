@@ -1,12 +1,12 @@
 use game::app::WindowCanvas;
 use game::main_renderer::MainRenderer;
+use game::sprites::render_on;
 use game::sprites::Animation;
+use game::sprites::RenderPosition;
 use game::sprites::Sprite;
 use sdl2::rect::Rect;
 use sdl2::render::Texture;
 use std::rc::Rc;
-use game::sprites::RenderPosition;
-use game::sprites::render_on;
 
 pub struct FemaleDeerSprite<'a> {
     pub texture: Rc<Texture<'a>>,
@@ -30,7 +30,12 @@ impl<'a> FemaleDeerSprite<'a> {
             frames_per_animation: 5,
             tile_size: 32,
             source: Rect::new(0, 0, 32, 32),
-            dest: Rect::new(0, 0, main_renderer.config.render_tile.width, main_renderer.config.render_tile.height),
+            dest: Rect::new(
+                0,
+                0,
+                main_renderer.config.render_tile.width,
+                main_renderer.config.render_tile.height,
+            ),
             animation: Animation::Eating,
             animation_step: 0,
         }

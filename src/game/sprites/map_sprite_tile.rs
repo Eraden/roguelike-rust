@@ -1,8 +1,8 @@
 use game::app::WindowCanvas;
 use game::main_renderer::MainRenderer;
-use game::sprites::Sprite;
 use game::sprites::female_deer_sprite::*;
 use game::sprites::ground_tile::*;
+use game::sprites::Sprite;
 
 pub struct MapSpriteTile<'a> {
     pub female_deer: Option<FemaleDeerSprite<'a>>,

@@ -1,7 +1,7 @@
 use game::app::WindowCanvas;
 use game::main_renderer::MainRenderer;
-use game::sprites::Sprite;
 use game::sprites::map_sprite_tile::*;
+use game::sprites::Sprite;
 
 pub struct MapSpriteLayer<'a> {
     pub sprites: Vec<MapSpriteTile<'a>>,

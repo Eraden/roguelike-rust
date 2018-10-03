@@ -3,20 +3,22 @@ extern crate rand;
 
 pub mod pond;
 
+use clap::{App, Arg};
 use rand::prelude::*;
 use rand::thread_rng;
 use std::fs::write;
 use std::iter::repeat_with;
-use clap::{Arg, App};
 
 use pond::*;
 
 fn gen_rand(w: &i32, h: &i32, min: &i32, max: &i32) -> Vec<Vec<i32>> {
     let mut rng = thread_rng();
-    repeat_with(||
+    repeat_with(|| {
         repeat_with(|| rng.gen_range(*min, *max))
-            .take(*w as usize).collect::<Vec<i32>>()
-    ).take(*h as usize).collect::<Vec<Vec<i32>>>()
+            .take(*w as usize)
+            .collect::<Vec<i32>>()
+    }).take(*h as usize)
+    .collect::<Vec<Vec<i32>>>()
 }
 
 fn put_header(name: &str, buffer: &mut String) {
@@ -32,55 +34,55 @@ fn put_tail(buffer: &mut String) {
 fn stringify_stream(stream: &Vec<Vec<i32>>) -> String {
     stream
         .iter()
-        .map(|a| a
-            .iter()
-            .map(|n| n.to_string())
-            .collect::<Vec<String>>()
-            .join(" ")
-        ).collect::<Vec<String>>().join("\n")
+        .map(|a| {
+            a.iter()
+                .map(|n| n.to_string())
+                .collect::<Vec<String>>()
+                .join(" ")
+        }).collect::<Vec<String>>()
+        .join("\n")
 }
 
 // cargo run -p map_generator -- first_map --width 40 --height 40 --layers animals ground1 ground2 ground3 players roofs plants
 fn main() {
     let possible_layers = [
-        "ground1", "ground2", "ground3",
-        "animals", "plants", "players", "roofs"
+        "ground1", "ground2", "ground3", "animals", "plants", "players", "roofs",
     ];
     let matches = App::new("Map Generator")
         .version("1.0.0")
         .about("Simple generate map")
-        .arg(Arg::with_name("layers")
-            .short("l")
-            .long("layers")
-            .help("number of map layers")
-            .takes_value(true)
-            .possible_values(&possible_layers)
-            .empty_values(true)
-            .multiple(true)
-        )
-        .arg(Arg::with_name("width")
-            .required(true)
-            .short("w")
-            .long("width")
-            .help("map width")
-            .takes_value(true)
-        )
-        .arg(Arg::with_name("height")
-            .required(true)
-            .short("h")
-            .long("height")
-            .help("map height")
-            .takes_value(true)
-        )
-        .arg(Arg::with_name("name")
-            .required(true)
-            .short("n")
-            .long("name")
-            .help("map name")
-            .takes_value(true)
-            .index(1)
-        )
-        .author("Adrian Woźniak")
+        .arg(
+            Arg::with_name("layers")
+                .short("l")
+                .long("layers")
+                .help("number of map layers")
+                .takes_value(true)
+                .possible_values(&possible_layers)
+                .empty_values(true)
+                .multiple(true),
+        ).arg(
+            Arg::with_name("width")
+                .required(true)
+                .short("w")
+                .long("width")
+                .help("map width")
+                .takes_value(true),
+        ).arg(
+            Arg::with_name("height")
+                .required(true)
+                .short("h")
+                .long("height")
+                .help("map height")
+                .takes_value(true),
+        ).arg(
+            Arg::with_name("name")
+                .required(true)
+                .short("n")
+                .long("name")
+                .help("map name")
+                .takes_value(true)
+                .index(1),
+        ).author("Adrian Woźniak")
         .get_matches();
 
     let name = matches.value_of("name").unwrap();
@@ -91,7 +93,10 @@ fn main() {
     let path = "./assets/maps/".to_string() + &name + &".map".to_string();
 
     let mut buffer = String::new();
-    buffer.push_str(&format!("'meta w {:?} h {:?} {:?}\n\n", width, height, name));
+    buffer.push_str(&format!(
+        "'meta w {:?} h {:?} {:?}\n\n",
+        width, height, name
+    ));
     for name in layers {
         let min = match name {
             "ground1" => 0,
@@ -120,18 +125,18 @@ fn main() {
         match name {
             "ground1" => {
                 put_pond(&mut section_stream, &PondType::SquarePond, 1, 1);
-            },
+            }
             "ground2" => {
                 put_pond(&mut section_stream, &PondType::SquarePond, 4, 4);
-            },
+            }
             "ground3" => {
                 put_pond(&mut section_stream, &PondType::SquarePond, 4, 1);
-            },
-            "animals" => {},
-            "plants" => {},
-            "roofs" => {},
-            "players" => {},
-            _ => {},
+            }
+            "animals" => {}
+            "plants" => {}
+            "roofs" => {}
+            "players" => {}
+            _ => {}
         };
 
         section_buffer.push_str(stringify_stream(&section_stream).as_str());

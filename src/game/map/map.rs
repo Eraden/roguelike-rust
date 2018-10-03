@@ -1,7 +1,7 @@
-use std::str::FromStr;
 use game::map::layer::*;
 use game::map::layer_type::*;
 use game::map::*;
+use std::str::FromStr;
 
 #[derive(Debug)]
 pub enum MapError {
@@ -34,9 +34,11 @@ impl FromStr for MapMeta {
     type Err = MapMetaError;
 
     fn from_str(contents: &str) -> Result<Self, <Self as FromStr>::Err> {
-        let mut meta = MapMeta { width: 0, height: 0 };
-        let array: Vec<&str> = contents.split(" ")
-            .collect::<Vec<&str>>();
+        let mut meta = MapMeta {
+            width: 0,
+            height: 0,
+        };
+        let array: Vec<&str> = contents.split(" ").collect::<Vec<&str>>();
         let mut it = array.iter();
         let meta_tag = it.next();
         if meta_tag != Some(&"'meta") {
@@ -106,13 +108,34 @@ impl Map {
             meta.width as u32,
             meta.height as u32,
         );
-        current.ground1 = self.ground1.clone().and_then(|layer| Some(layer.take(&allowed_range)));
-        current.ground2 = self.ground2.clone().and_then(|layer| Some(layer.take(&allowed_range)));
-        current.ground3 = self.ground3.clone().and_then(|layer| Some(layer.take(&allowed_range)));
-        current.animals = self.animals.clone().and_then(|layer| Some(layer.take(&allowed_range)));
-        current.plants = self.plants.clone().and_then(|layer| Some(layer.take(&allowed_range)));
-        current.players = self.players.clone().and_then(|layer| Some(layer.take(&allowed_range)));
-        current.roofs = self.roofs.clone().and_then(|layer| Some(layer.take(&allowed_range)));
+        current.ground1 = self
+            .ground1
+            .clone()
+            .and_then(|layer| Some(layer.take(&allowed_range)));
+        current.ground2 = self
+            .ground2
+            .clone()
+            .and_then(|layer| Some(layer.take(&allowed_range)));
+        current.ground3 = self
+            .ground3
+            .clone()
+            .and_then(|layer| Some(layer.take(&allowed_range)));
+        current.animals = self
+            .animals
+            .clone()
+            .and_then(|layer| Some(layer.take(&allowed_range)));
+        current.plants = self
+            .plants
+            .clone()
+            .and_then(|layer| Some(layer.take(&allowed_range)));
+        current.players = self
+            .players
+            .clone()
+            .and_then(|layer| Some(layer.take(&allowed_range)));
+        current.roofs = self
+            .roofs
+            .clone()
+            .and_then(|layer| Some(layer.take(&allowed_range)));
         current
     }
 
@@ -161,13 +184,12 @@ impl FromStr for Map {
         let mut lines: Vec<&str> = contents.split("\n\n").collect();
 
         let mut it = lines.iter_mut();
-        current.meta = it
-            .next().unwrap()
-            .parse::<MapMeta>().unwrap();
+        current.meta = it.next().unwrap().parse::<MapMeta>().unwrap();
 
         it.filter(|s| s.len() > 0).for_each(|s| {
             s.parse::<Layer>()
-                .and_then(|layer| current.set_layer(&layer)).unwrap();
+                .and_then(|layer| current.set_layer(&layer))
+                .unwrap();
         });
         Ok(current)
     }

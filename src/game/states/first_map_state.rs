@@ -4,9 +4,9 @@ use game::sprites::Sprite;
 use game::app::WindowCanvas;
 use game::events::UpdateResult;
 use game::main_renderer::MainRenderer;
+use game::sprites::map_sprite::MapSprite;
 use game::states::State;
 use sdl2::event::Event;
-use game::sprites::map_sprite::MapSprite;
 
 pub struct FirstMapState<'a> {
     pub deers: Vec<FemaleDeerSprite<'a>>,

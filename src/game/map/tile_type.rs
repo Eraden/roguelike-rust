@@ -45,6 +45,9 @@ pub enum TileType {
     // 8x2
     PondWater,
 
+    //= plants
+    TinyGreenBush,
+
     //= animals
     FemaleDeer,
     MaleDeer,
@@ -83,7 +86,7 @@ impl FromStr for TileType {
 
             // plants
             "50" => Ok(TileType::Empty),
-            "51" => Ok(TileType::Empty),
+            "51" => Ok(TileType::TinyGreenBush),
             "52" => Ok(TileType::Empty),
             "53" => Ok(TileType::Empty),
             "54" => Ok(TileType::Empty),

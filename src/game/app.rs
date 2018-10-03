@@ -1,5 +1,4 @@
 #[allow(unused_imports)]
-
 use std::time::Duration;
 
 use sdl2;
@@ -8,7 +7,7 @@ use sdl2::keyboard::Keycode;
 use sdl2::mouse::MouseButton;
 use sdl2::pixels::Color;
 use sdl2::render::Canvas;
-use sdl2::video::{Window};
+use sdl2::video::Window;
 use sdl2::EventPump;
 use sdl2::{Sdl, TimerSubsystem, VideoSubsystem};
 

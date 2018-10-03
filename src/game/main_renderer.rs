@@ -35,8 +35,11 @@ impl<'a, 'b> MainRenderer<'a, 'b> {
             font_manager: FontManager::new(&font_context),
             texture_manager: TextureManager::new(&texture_creator),
             texture_creator,
-            scroll: Position { x: 0, y: 0  },
-            viewport: Viewport { width: 40, height: 40 },
+            scroll: Position { x: 0, y: 0 },
+            viewport: Viewport {
+                width: 40,
+                height: 40,
+            },
         }
     }
 }

@@ -1,7 +1,7 @@
-pub mod tile_type;
-pub mod layer_type;
 pub mod layer;
+pub mod layer_type;
 pub mod map;
+pub mod tile_type;
 
 use std::fs::read_to_string;
 

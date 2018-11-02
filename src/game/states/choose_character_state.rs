@@ -7,26 +7,20 @@ use game::sprites::map_sprite::MapSprite;
 use game::states::State;
 use sdl2::event::Event;
 
-pub struct FirstMapState<'a> {
-    pub map: MapSprite<'a>,
+pub struct ChooseCharacterState<'a> {
 }
 
-impl<'a> FirstMapState<'a> {
+impl<'a> ChooseCharacterState<'a> {
     pub fn new(main_renderer: &mut MainRenderer<'a, 'a>) -> Self {
-        let mut state = FirstMapState {
-            map: MapSprite::new(&"first_map".to_string(), main_renderer),
-        };
-        state
+        ChooseCharacterState {}
     }
 }
 
-impl<'a> State<'a> for FirstMapState<'a> {
+impl<'a> State<'a> for ChooseCharacterState<'a> {
     fn update(&mut self, ticks: i32) {
-        self.map.update(ticks);
     }
 
     fn render(&mut self, canvas: &mut WindowCanvas, main_renderer: &mut MainRenderer<'a, 'a>) {
-        self.map.render(canvas, main_renderer);
     }
 
     fn handle_click(&mut self, _event: &Event) -> UpdateResult {

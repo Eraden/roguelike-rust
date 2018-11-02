@@ -1,5 +1,8 @@
 pub mod female_deer_sprite;
+pub mod male_deer_sprite;
+pub mod plant_tile;
 pub mod ground_tile;
+pub mod warrior_sprite;
 pub mod map_sprite;
 pub mod map_sprite_layer;
 pub mod map_sprite_tile;
@@ -9,6 +12,14 @@ pub mod start_button;
 use game::app::WindowCanvas;
 use game::main_renderer::MainRenderer;
 use sdl2::rect::Rect;
+
+#[derive(Debug, Clone)]
+pub enum PlayerClass {
+    Warrior,
+    Wizard,
+    Rouge,
+    Ranger,
+}
 
 #[derive(Debug, Clone)]
 pub enum SpriteType {
@@ -21,6 +32,13 @@ pub enum Animation {
     Idle,
     Running,
     Eating,
+    Attacking,
+}
+
+#[derive(Debug, Clone)]
+pub enum Gender {
+    Male,
+    Female,
 }
 
 //pub enum SpriteAction {
@@ -35,6 +53,11 @@ pub enum Animation {
 //    fn animate(&mut self, ticks: i32, y: i32);
 //
 //    fn perform_action(&mut self, ticks: i32, action: &SpriteAction);
+//}
+
+//pub trait Collidable {
+//    fn is_collision(other: &Collidable) -> bool;
+//    fn is_taken(x: &i32, y: &i32) -> bool;
 //}
 
 pub trait Sprite<'a> {

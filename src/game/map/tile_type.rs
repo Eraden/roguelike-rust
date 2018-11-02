@@ -47,6 +47,7 @@ pub enum TileType {
 
     //= plants
     TinyGreenBush,
+    Pine,
 
     //= animals
     FemaleDeer,

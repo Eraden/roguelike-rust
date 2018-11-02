@@ -8,9 +8,7 @@ use sdl2::rect::Rect;
 use sdl2::render::Texture;
 use std::rc::Rc;
 
-const TILE_SIZE: u32 = 32;
-
-pub struct FemaleDeerSprite<'a> {
+pub struct MaleDeerSprite<'a> {
     pub texture: Rc<Texture<'a>>,
     pub frames_per_animation: i32,
     pub tile_size: i32,
@@ -20,18 +18,18 @@ pub struct FemaleDeerSprite<'a> {
     pub animation_step: i32,
 }
 
-impl<'a> FemaleDeerSprite<'a> {
+impl<'a> MaleDeerSprite<'a> {
     pub fn new(main_renderer: &mut MainRenderer<'a, 'a>) -> Self {
         let texture = main_renderer
             .texture_manager
-            .load("./assets/textures/deer female calciumtrice.png")
+            .load("./assets/textures/deer male calciumtrice.png")
             .unwrap();
 
-        FemaleDeerSprite {
+        MaleDeerSprite {
             texture,
             frames_per_animation: 5,
             tile_size: 32,
-            source: Rect::new(0, 0, TILE_SIZE, TILE_SIZE),
+            source: Rect::new(0, 0, 32, 32),
             dest: Rect::new(
                 0,
                 0,
@@ -63,13 +61,13 @@ impl<'a> FemaleDeerSprite<'a> {
     }
 }
 
-impl<'a> RenderPosition for FemaleDeerSprite<'a> {
+impl<'a> RenderPosition for MaleDeerSprite<'a> {
     fn render_on(&mut self, x: &usize, y: &usize) {
         render_on(&mut self.dest, &(self.tile_size as usize), x, y);
     }
 }
 
-impl<'a> Sprite<'a> for FemaleDeerSprite<'a> {
+impl<'a> Sprite<'a> for MaleDeerSprite<'a> {
     fn update(&mut self, ticks: i32) {
         let y = {
             let animation = &self.animation;

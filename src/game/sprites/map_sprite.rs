@@ -14,6 +14,7 @@ use game::sprites::{RenderPosition, Sprite};
 use std::vec::Vec;
 
 use sdl2::rect::Rect;
+use game::sprites::male_deer_sprite::MaleDeerSprite;
 
 enum LoadTarget {
     LoadTargetGround1,
@@ -60,88 +61,12 @@ impl<'a> MapSprite<'a> {
 
     fn load(&mut self, map_name: &String, main_renderer: &mut MainRenderer<'a, 'a>) {
         let map: Map = load_map(map_name);
-        let ground1 = map
-            .clone()
-            .ground1
-            .ok_or(Ok::<Layer, TileTypeErr>(Layer {
-                layer_type: LayerType::Ground1,
-                tiles: Vec::new(),
-            })).unwrap();
-        let ground2 = map
-            .clone()
-            .ground2
-            .ok_or(Ok::<Layer, TileTypeErr>(Layer {
-                layer_type: LayerType::Ground2,
-                tiles: Vec::new(),
-            })).unwrap();
-        let ground3 = map
-            .clone()
-            .ground3
-            .ok_or(Ok::<Layer, TileTypeErr>(Layer {
-                layer_type: LayerType::Ground3,
-                tiles: Vec::new(),
-            })).unwrap();
 
-        {
-            self.load_ground(&map, &ground1, LoadTarget::LoadTargetGround1, main_renderer);
-        }
-        {
-            self.load_ground(&map, &ground2, LoadTarget::LoadTargetGround2, main_renderer);
-        }
-        {
-            self.load_ground(&map, &ground3, LoadTarget::LoadTargetGround3, main_renderer);
-        }
-        for (index, tile_type) in map
-            .clone()
-            .animals
-            .ok_or(Ok::<Layer, TileTypeErr>(Layer {
-                layer_type: LayerType::Animals,
-                tiles: Vec::new(),
-            })).unwrap()
-            .tiles
-            .into_iter()
-            .enumerate()
-        {
-            let y = (index as f64 / map.meta.width as f64).floor() as usize;
-            let x = (index % map.meta.height) as usize;
-            let mut sprite = MapSpriteTile::new();
-            match tile_type {
-                TileType::FemaleDeer => {
-                    let mut female_deer_sprite = FemaleDeerSprite::new(main_renderer);
-                    female_deer_sprite.render_on(&x, &y);
-                    sprite.female_deer = Some(female_deer_sprite);
-                    self.animals.sprites.push(sprite);
-                }
-                _ => {}
-            }
-        }
-        for (index, tile_type) in map
-            .clone()
-            .plants
-            .ok_or(Ok::<Layer, TileTypeErr>(Layer {
-                layer_type: LayerType::Plants,
-                tiles: Vec::new(),
-            })).unwrap()
-            .tiles
-            .into_iter()
-            .enumerate()
-        {
-            match tile_type {
-                TileType::TinyGreenBush => {
-                    let _y = (index as f64 / map.meta.width as f64).floor() as usize;
-                    let _x = (index % map.meta.height) as usize;
-                    let y = (index as f64 / map.meta.width as f64).floor() as usize;
-                    let x = (index % map.meta.height) as usize;
-                    let mut sprite = MapSpriteTile::new();
-                    let mut tile_sprite = GroundTile::new(main_renderer);
-                    tile_sprite.set_type(&tile_type);
-                    tile_sprite.render_on(&x, &y);
-                    sprite.ground = Some(tile_sprite);
-                    self.plants.sprites.push(sprite);
-                }
-                _ => {}
-            };
-        }
+        self.load_ground(&map, &map.ground1, LoadTarget::LoadTargetGround1, main_renderer);
+        self.load_ground(&map, &map.ground2, LoadTarget::LoadTargetGround2, main_renderer);
+        self.load_ground(&map, &map.ground3, LoadTarget::LoadTargetGround3, main_renderer);
+        self.load_animals(&map, &map.animals, main_renderer);
+        self.load_plants(&map, &map.plants, main_renderer);
         for (index, _tile_type) in map
             .clone()
             .players
@@ -152,11 +77,11 @@ impl<'a> MapSprite<'a> {
             .tiles
             .into_iter()
             .enumerate()
-        {
-            let _y = (index as f64 / map.meta.width as f64).floor() as usize;
-            let _x = (index % map.meta.height) as usize;
-            // players;
-        }
+            {
+                let _y = (index as f64 / map.meta.width as f64).floor() as usize;
+                let _x = (index % map.meta.height) as usize;
+                // players;
+            }
         for (index, _tile_type) in map
             .clone()
             .roofs
@@ -167,24 +92,26 @@ impl<'a> MapSprite<'a> {
             .tiles
             .into_iter()
             .enumerate()
-        {
-            let _y = (index as f64 / map.meta.width as f64).floor() as usize;
-            let _x = (index % map.meta.height) as usize;
-            // roofs;
-        }
+            {
+                let _y = (index as f64 / map.meta.width as f64).floor() as usize;
+                let _x = (index % map.meta.height) as usize;
+                // roofs;
+            }
     }
 
     fn load_ground(
         &mut self,
         map: &Map,
-        ground: &Layer,
+        maybe_ground: &Option<Layer>,
         target: LoadTarget,
         main_renderer: &mut MainRenderer<'a, 'a>,
     ) {
+        let ground = match maybe_ground {
+            Some(g) => g,
+            None => return,
+        };
         for index in 0..ground.tiles.len() {
-            let y = (index as f64 / map.meta.width as f64).floor() as usize;
-            let x = (index % map.meta.height) as usize;
-            let mut sprite = <MapSpriteTile<'a>>::new();
+            let (x, y) = self.index_to_coords(&index, map);
             let mut tile_sprite = GroundTile::new(main_renderer);
             let sprite_type = ground.tiles.get(index).unwrap();
             match sprite_type {
@@ -207,7 +134,7 @@ impl<'a> MapSprite<'a> {
                 | TileType::PondWater => {
                     tile_sprite.set_type(&sprite_type);
                     tile_sprite.render_on(&x, &y);
-                    sprite.ground = Some(tile_sprite);
+                    let mut sprite = MapSpriteTile::new_ground_tile(tile_sprite);
                     match target {
                         LoadTarget::LoadTargetGround1 => self.ground1.sprites.push(sprite),
                         LoadTarget::LoadTargetGround2 => self.ground2.sprites.push(sprite),
@@ -217,6 +144,76 @@ impl<'a> MapSprite<'a> {
                 _ => {}
             };
         }
+    }
+
+    fn load_animals(&mut self, map: &Map, maybe_animals: &Option<Layer>, main_renderer: &mut MainRenderer<'a, 'a>) {
+        let animals = match maybe_animals {
+            Some(a) => a,
+            None => return,
+        };
+        for (index, tile_type) in animals.tiles.iter().enumerate() {
+            let (x, y) = self.index_to_coords(&index, &map);
+            match tile_type {
+                TileType::FemaleDeer => {
+                    let mut female_deer_sprite = FemaleDeerSprite::new(main_renderer);
+                    female_deer_sprite.render_on(&x, &y);
+                    let mut sprite = MapSpriteTile::new_female_deer_tile(female_deer_sprite);
+                    self.animals.sprites.push(sprite);
+                }
+                TileType::MaleDeer => {
+                    let mut male_deer_sprite = MaleDeerSprite::new(main_renderer);
+                    male_deer_sprite.render_on(&x, &y);
+                    let mut sprite = MapSpriteTile::new_male_deer_tile(male_deer_sprite);
+                    self.animals.sprites.push(sprite);
+                }
+                _ => {}
+            }
+        }
+    }
+
+    fn load_plants(&mut self, map: &Map, maybe_plants: &Option<Layer>, main_renderer: &mut MainRenderer<'a, 'a>) {
+        let plants = match maybe_plants {
+            Some(p) => p,
+            None => return,
+        };
+        for (index, tile_type) in plants.tiles.iter().enumerate() {
+            match tile_type {
+                TileType::TinyGreenBush => {
+                    let (x, y) = self.index_to_coords(&index, &map);
+                    let mut tile_sprite = GroundTile::new(main_renderer);
+                    tile_sprite.set_type(&tile_type);
+                    tile_sprite.render_on(&x, &y);
+                    let mut sprite = MapSpriteTile::new_ground_tile(tile_sprite);
+                    self.plants.sprites.push(sprite);
+                }
+                _ => {}
+            };
+        }
+    }
+
+    fn load_players(&mut self, map: &Map, maybe_players: &Option<Layer>, main_renderer: &mut MainRenderer<'a, 'a>) {
+        let players = match maybe_players {
+            Some(a) => a,
+            None => return,
+        };
+        for (index, tile_type) in players.tiles.iter().enumerate() {
+            let (x, y) = self.index_to_coords(&index, &map);
+            match tile_type {
+                TileType::FemaleDeer => {
+                    let mut female_deer_sprite = FemaleDeerSprite::new(main_renderer);
+                    female_deer_sprite.render_on(&x, &y);
+                    let mut sprite = MapSpriteTile::new_female_deer_tile(female_deer_sprite);
+                    self.players.sprites.push(sprite);
+                }
+                _ => {}
+            }
+        }
+    }
+
+    fn index_to_coords(&self, index: &usize, map: &Map) -> (usize, usize) {
+        let y = (*index as f64 / map.meta.width as f64).floor() as usize;
+        let x = (*index % map.meta.height) as usize;
+        (x, y)
     }
 }
 

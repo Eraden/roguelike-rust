@@ -16,6 +16,7 @@ use game::events::UpdateResult;
 use game::main_renderer::MainRenderer;
 use game::states::first_map_state::*;
 use game::states::main_menu_state::*;
+use game::states::choose_character_state::*;
 use game::states::State;
 
 pub type WindowCanvas = Canvas<Window>;
@@ -30,6 +31,7 @@ pub struct App {
 pub enum AppState<'a> {
     MainMenu(MainMenuState<'a>),
     FirstMap(FirstMapState<'a>),
+    ChooseCharacter(ChooseCharacterState<'a>),
 }
 
 impl<'a> App {
@@ -75,7 +77,10 @@ impl<'a> App {
                 UpdateResult::Stop => break 'running,
                 UpdateResult::StartFirstMap => {
                     app_state = AppState::FirstMap(FirstMapState::new(&mut main_renderer))
-                }
+                },
+                UpdateResult::PickCharacter => {
+                    app_state = AppState::ChooseCharacter(ChooseCharacterState::new(&mut main_renderer));
+                },
                 _ => {}
             }
 
@@ -85,11 +90,15 @@ impl<'a> App {
                 AppState::MainMenu(ref mut menu) => {
                     menu.update(timer.ticks() as i32);
                     menu.render(&mut self.canvas, &mut main_renderer);
-                }
+                },
                 AppState::FirstMap(ref mut map) => {
                     map.update(timer.ticks() as i32);
                     map.render(&mut self.canvas, &mut main_renderer);
-                }
+                },
+                AppState::ChooseCharacter(ref mut state) =>  {
+                    state.update(timer.ticks() as i32);
+                    state.render(&mut self.canvas, &mut main_renderer);
+                },
             };
 
             self.present();
@@ -115,6 +124,7 @@ impl<'a> App {
                 } => match app_state {
                     AppState::MainMenu(state) => return state.handle_click(&event),
                     AppState::FirstMap(state) => return state.handle_click(&event),
+                    AppState::ChooseCharacter(state) => return state.handle_click(&event),
                 },
                 _ => {}
             };

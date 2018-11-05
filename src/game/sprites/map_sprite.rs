@@ -67,6 +67,7 @@ impl<'a> MapSprite<'a> {
         self.load_ground(&map, &map.ground3, LoadTarget::LoadTargetGround3, main_renderer);
         self.load_animals(&map, &map.animals, main_renderer);
         self.load_plants(&map, &map.plants, main_renderer);
+        self.load_players(&map, &map.players, main_renderer);
         for (index, _tile_type) in map
             .clone()
             .players

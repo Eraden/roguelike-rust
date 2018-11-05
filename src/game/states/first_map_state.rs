@@ -13,10 +13,9 @@ pub struct FirstMapState<'a> {
 
 impl<'a> FirstMapState<'a> {
     pub fn new(main_renderer: &mut MainRenderer<'a, 'a>) -> Self {
-        let mut state = FirstMapState {
+        FirstMapState {
             map: MapSprite::new(&"first_map".to_string(), main_renderer),
-        };
-        state
+        }
     }
 }
 

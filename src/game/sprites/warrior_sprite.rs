@@ -43,6 +43,10 @@ impl<'a> WarriorSprite<'a> {
         }
     }
 
+    pub fn resize(&mut self, size: &u32) {
+        self.dest = Rect::new(0, 0, size.clone(), size.clone());
+    }
+
     fn resolve_y(&self, animation: &Animation) -> i32 {
         let animation_offset = match animation {
             Animation::Idle => 0,

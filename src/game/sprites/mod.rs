@@ -77,11 +77,11 @@ pub struct Animatable {
 
 impl Animatable {
     pub fn new(frames_per_animation: i32, tile_size: i32) -> Self {
-        Animatable {
+        Self {
             animation: Animation::Idle,
             frames_per_animation,
             tile_size,
-            animation_step: 0
+            animation_step: 0,
         }
     }
 
@@ -156,10 +156,35 @@ fn check_is_inside(x: &i32, y: &i32, rect: &Rect) -> bool {
     let xe: i32 = xs + rect.width() as i32;
     let ys: i32 = rect.y();
     let ye: i32 = ys + rect.width() as i32;
-    (xs..xe).contains(&x) && (ys..ye).contains(&y)
+    xs <= *x && *x <= xe && ys <= *y && *y <= ye
 }
 
 pub fn render_on(dest: &mut Rect, tile_size: &usize, x: &usize, y: &usize) {
     dest.set_x((x * tile_size) as i32);
     dest.set_y((y * tile_size) as i32);
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn it_detect_inside_rect() {
+        assert_eq!(check_is_inside(&2, &2, &Rect::new(1, 1, 3, 3)), true);
+    }
+
+    #[test]
+    fn is_detect_outside_rect() {
+        assert_eq!(check_is_inside(&5, &5, &Rect::new(1, 1, 3, 3)), false);
+    }
+
+    #[test]
+    fn change_render_dest() {
+        let mut dest = Rect::new(0, 0, 1, 1);
+        render_on(&mut dest, &1, &1, &1);
+        assert_eq!(dest.x(), 1);
+        assert_eq!(dest.y(), 1);
+        assert_eq!(dest.width(), 1);
+        assert_eq!(dest.height(), 1);
+    }
 }

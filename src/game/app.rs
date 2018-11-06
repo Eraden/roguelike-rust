@@ -16,7 +16,7 @@ use game::events::UpdateResult;
 use game::main_renderer::MainRenderer;
 use game::states::first_map_state::*;
 use game::states::main_menu_state::*;
-use game::states::choose_character_state::*;
+use game::states::choose_character_state::ChooseCharacterState;
 use game::states::State;
 
 pub type WindowCanvas = Canvas<Window>;

@@ -9,7 +9,7 @@ jobs:
         key: project-cache
     - run:
         name: Install dependencies
-        command: apt-get install libsdl2-dev
+        command: apt-get install -y libsdl2-dev
     - run:
         name: Check formatting
         command: |

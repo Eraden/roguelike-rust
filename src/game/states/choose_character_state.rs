@@ -3,10 +3,10 @@ use game::sprites::Sprite;
 use game::app::WindowCanvas;
 use game::events::UpdateResult;
 use game::main_renderer::MainRenderer;
-use game::states::State;
-use sdl2::event::Event;
 use game::sprites::player_sprite::*;
 use game::sprites::ClickHandler;
+use game::states::State;
+use sdl2::event::Event;
 
 struct WarriorSpriteButton<'a> {
     warrior: WarriorSprite<'a>,
@@ -66,7 +66,7 @@ impl<'a> ChooseCharacterState<'a> {
             warrior,
             wizard,
             rogue,
-            ranger
+            ranger,
         }
     }
 }

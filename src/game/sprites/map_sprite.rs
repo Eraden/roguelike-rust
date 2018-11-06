@@ -13,8 +13,8 @@ use game::sprites::{RenderPosition, Sprite};
 
 use std::vec::Vec;
 
-use sdl2::rect::Rect;
 use game::sprites::male_deer_sprite::MaleDeerSprite;
+use sdl2::rect::Rect;
 
 enum LoadTarget {
     LoadTargetGround1,
@@ -62,9 +62,24 @@ impl<'a> MapSprite<'a> {
     fn load(&mut self, map_name: &String, main_renderer: &mut MainRenderer<'a, 'a>) {
         let map: Map = load_map(map_name);
 
-        self.load_ground(&map, &map.ground1, LoadTarget::LoadTargetGround1, main_renderer);
-        self.load_ground(&map, &map.ground2, LoadTarget::LoadTargetGround2, main_renderer);
-        self.load_ground(&map, &map.ground3, LoadTarget::LoadTargetGround3, main_renderer);
+        self.load_ground(
+            &map,
+            &map.ground1,
+            LoadTarget::LoadTargetGround1,
+            main_renderer,
+        );
+        self.load_ground(
+            &map,
+            &map.ground2,
+            LoadTarget::LoadTargetGround2,
+            main_renderer,
+        );
+        self.load_ground(
+            &map,
+            &map.ground3,
+            LoadTarget::LoadTargetGround3,
+            main_renderer,
+        );
         self.load_animals(&map, &map.animals, main_renderer);
         self.load_plants(&map, &map.plants, main_renderer);
         self.load_players(&map, &map.players, main_renderer);
@@ -78,11 +93,11 @@ impl<'a> MapSprite<'a> {
             .tiles
             .into_iter()
             .enumerate()
-            {
-                let _y = (index as f64 / map.meta.width as f64).floor() as usize;
-                let _x = (index % map.meta.height) as usize;
-                // players;
-            }
+        {
+            let _y = (index as f64 / map.meta.width as f64).floor() as usize;
+            let _x = (index % map.meta.height) as usize;
+            // players;
+        }
         for (index, _tile_type) in map
             .clone()
             .roofs
@@ -93,11 +108,11 @@ impl<'a> MapSprite<'a> {
             .tiles
             .into_iter()
             .enumerate()
-            {
-                let _y = (index as f64 / map.meta.width as f64).floor() as usize;
-                let _x = (index % map.meta.height) as usize;
-                // roofs;
-            }
+        {
+            let _y = (index as f64 / map.meta.width as f64).floor() as usize;
+            let _x = (index % map.meta.height) as usize;
+            // roofs;
+        }
     }
 
     fn load_ground(
@@ -147,7 +162,12 @@ impl<'a> MapSprite<'a> {
         }
     }
 
-    fn load_animals(&mut self, map: &Map, maybe_animals: &Option<Layer>, main_renderer: &mut MainRenderer<'a, 'a>) {
+    fn load_animals(
+        &mut self,
+        map: &Map,
+        maybe_animals: &Option<Layer>,
+        main_renderer: &mut MainRenderer<'a, 'a>,
+    ) {
         let animals = match maybe_animals {
             Some(a) => a,
             None => return,
@@ -172,7 +192,12 @@ impl<'a> MapSprite<'a> {
         }
     }
 
-    fn load_plants(&mut self, map: &Map, maybe_plants: &Option<Layer>, main_renderer: &mut MainRenderer<'a, 'a>) {
+    fn load_plants(
+        &mut self,
+        map: &Map,
+        maybe_plants: &Option<Layer>,
+        main_renderer: &mut MainRenderer<'a, 'a>,
+    ) {
         let plants = match maybe_plants {
             Some(p) => p,
             None => return,
@@ -192,7 +217,12 @@ impl<'a> MapSprite<'a> {
         }
     }
 
-    fn load_players(&mut self, map: &Map, maybe_players: &Option<Layer>, main_renderer: &mut MainRenderer<'a, 'a>) {
+    fn load_players(
+        &mut self,
+        map: &Map,
+        maybe_players: &Option<Layer>,
+        main_renderer: &mut MainRenderer<'a, 'a>,
+    ) {
         let players = match maybe_players {
             Some(a) => a,
             None => return,

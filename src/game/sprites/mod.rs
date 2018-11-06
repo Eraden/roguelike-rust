@@ -1,20 +1,20 @@
 pub mod female_deer_sprite;
-pub mod male_deer_sprite;
-pub mod plant_tile;
 pub mod ground_tile;
-pub mod player_sprite;
+pub mod male_deer_sprite;
 pub mod map_sprite;
 pub mod map_sprite_layer;
 pub mod map_sprite_tile;
+pub mod plant_tile;
+pub mod player_sprite;
 pub mod quit_button;
 pub mod start_button;
 
 use game::app::WindowCanvas;
-use game::main_renderer::MainRenderer;
 use game::events::UpdateResult;
-use sdl2::render::Texture;
-use sdl2::rect::Rect;
+use game::main_renderer::MainRenderer;
 use sdl2::event::Event;
+use sdl2::rect::Rect;
+use sdl2::render::Texture;
 use std::rc::Rc;
 
 #[derive(Debug, Clone)]
@@ -107,12 +107,15 @@ pub struct Renderable<'a> {
 }
 
 impl<'a> Renderable<'a> {
-    pub fn new(main_renderer: &mut MainRenderer<'a, 'a>, path: &str, dest_size: i32, source: Rect, dest: Rect) -> Self {
+    pub fn new(
+        main_renderer: &mut MainRenderer<'a, 'a>,
+        path: &str,
+        dest_size: i32,
+        source: Rect,
+        dest: Rect,
+    ) -> Self {
         Renderable {
-            texture: main_renderer
-                .texture_manager
-                .load(path)
-                .unwrap(),
+            texture: main_renderer.texture_manager.load(path).unwrap(),
             dest_size,
             source,
             dest,

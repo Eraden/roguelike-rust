@@ -11,9 +11,7 @@ pub struct PlayerCharacterSprite<'a> {
 
 impl<'a> PlayerCharacterSprite<'a> {
     pub fn new(main_renderer: &mut MainRenderer<'a, 'a>, spritesheet: &str) -> Self {
-        let config = {
-            main_renderer.config.clone()
-        };
+        let config = { main_renderer.config.clone() };
         Self {
             gender: Gender::Female,
             animatable: Animatable::new(5, 32),
@@ -22,38 +20,42 @@ impl<'a> PlayerCharacterSprite<'a> {
                 spritesheet,
                 32,
                 Rect::new(0, 0, 32, 32),
-                Rect::new(
-                    0,
-                    0,
-                    config.render_tile.width,
-                    config.render_tile.height,
-                ),
+                Rect::new(0, 0, config.render_tile.width, config.render_tile.height),
             ),
         }
     }
 
     pub fn new_warrior(main_renderer: &mut MainRenderer<'a, 'a>) -> Self {
-        PlayerCharacterSprite::new(main_renderer, "./assets/textures/warrior spritesheet calciumtrice.png")
+        PlayerCharacterSprite::new(
+            main_renderer,
+            "./assets/textures/warrior spritesheet calciumtrice.png",
+        )
     }
 
     pub fn new_wizard(main_renderer: &mut MainRenderer<'a, 'a>) -> Self {
-        PlayerCharacterSprite::new(main_renderer, "./assets/textures/wizard spritesheet calciumtrice.png")
+        PlayerCharacterSprite::new(
+            main_renderer,
+            "./assets/textures/wizard spritesheet calciumtrice.png",
+        )
     }
 
     pub fn new_rogue(main_renderer: &mut MainRenderer<'a, 'a>) -> Self {
-        PlayerCharacterSprite::new(main_renderer, "./assets/textures/rogue spritesheet calciumtrice.png")
+        PlayerCharacterSprite::new(
+            main_renderer,
+            "./assets/textures/rogue spritesheet calciumtrice.png",
+        )
     }
 
     pub fn new_ranger(main_renderer: &mut MainRenderer<'a, 'a>) -> Self {
-        PlayerCharacterSprite::new(main_renderer, "./assets/textures/ranger spritesheet calciumtrice.png")
+        PlayerCharacterSprite::new(
+            main_renderer,
+            "./assets/textures/ranger spritesheet calciumtrice.png",
+        )
     }
 
     pub fn resize(&mut self, size: &u32) {
         self.renderable.dest_size = size.clone() as i32;
-        self.renderable.dest = Rect::new(
-            0, 0,
-            size.clone(), size.clone()
-        );
+        self.renderable.dest = Rect::new(0, 0, size.clone(), size.clone());
     }
 }
 
@@ -83,7 +85,8 @@ impl<'a> RenderPosition for PlayerCharacterSprite<'a> {
 impl<'a> Sprite<'a> for PlayerCharacterSprite<'a> {
     fn update(&mut self, ticks: i32) {
         let y = { self.resolve_y(&self.animatable.animation) };
-        self.animatable.animate(&ticks, y, &mut self.renderable.source);
+        self.animatable
+            .animate(&ticks, y, &mut self.renderable.source);
     }
 
     fn render(&mut self, canvas: &mut WindowCanvas, main_renderer: &mut MainRenderer<'a, 'a>) {
@@ -93,14 +96,14 @@ impl<'a> Sprite<'a> for PlayerCharacterSprite<'a> {
 
 macro_rules! player_sprite {
     ($class_name: ident, $builder: expr) => {
-        pub struct $class_name <'a> {
+        pub struct $class_name<'a> {
             player_character: PlayerCharacterSprite<'a>,
         }
 
-        impl<'a> $class_name <'a> {
+        impl<'a> $class_name<'a> {
             pub fn new(main_renderer: &mut MainRenderer<'a, 'a>) -> Self {
                 Self {
-                    player_character: $builder(main_renderer)
+                    player_character: $builder(main_renderer),
                 }
             }
 
@@ -109,22 +112,26 @@ macro_rules! player_sprite {
             }
         }
 
-        impl<'a> RenderPosition for $class_name <'a> {
+        impl<'a> RenderPosition for $class_name<'a> {
             fn render_on(&mut self, x: &usize, y: &usize) {
                 self.player_character.render_on(x, y);
             }
         }
 
-        impl<'a> Sprite<'a> for $class_name <'a> {
+        impl<'a> Sprite<'a> for $class_name<'a> {
             fn update(&mut self, ticks: i32) {
                 self.player_character.update(ticks);
             }
 
-            fn render(&mut self, canvas: &mut WindowCanvas, main_renderer: &mut MainRenderer<'a, 'a>) {
+            fn render(
+                &mut self,
+                canvas: &mut WindowCanvas,
+                main_renderer: &mut MainRenderer<'a, 'a>,
+            ) {
                 self.player_character.render(canvas, main_renderer);
             }
         }
-    }
+    };
 }
 
 player_sprite!(WarriorSprite, PlayerCharacterSprite::new_warrior);

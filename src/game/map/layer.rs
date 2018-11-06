@@ -58,20 +58,17 @@ impl FromStr for Layer {
                     let m: String = meta.to_string();
                     let res: bool = m.ends_with(&s);
                     res
-                })
-                .ok_or(LayerError::NoMatchingLayerType)?
+                }).ok_or(LayerError::NoMatchingLayerType)?
                 .clone(),
         };
 
         let mut a: Vec<TileType> = Vec::new();
-        it
-            .filter(|s| s.len() > 0)
-            .for_each(|line| {
-                line.split::<&str>(" ")
-                    .collect::<Vec<&str>>()
-                    .iter()
-                    .for_each(|n| a.push(n.parse::<TileType>().unwrap()));
-            });
+        it.filter(|s| s.len() > 0).for_each(|line| {
+            line.split::<&str>(" ")
+                .collect::<Vec<&str>>()
+                .iter()
+                .for_each(|n| a.push(n.parse::<TileType>().unwrap()));
+        });
         Ok(Layer::new(&layer_type, &a))
     }
 }

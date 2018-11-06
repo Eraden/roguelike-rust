@@ -8,6 +8,9 @@ jobs:
     - restore_cache:
         key: project-cache
     - run:
+        name: Install dependencies
+        command: apt-get install libsdl2-dev
+    - run:
         name: Check formatting
         command: |
           rustfmt --version

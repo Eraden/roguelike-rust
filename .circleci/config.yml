@@ -22,7 +22,7 @@ jobs:
           rustup run nightly cargo build -p roguelike
     - run:
         name: Test
-        command: rustup run nightly cargo test -p roguelike
+        command: rustup run nightly cargo test --verbose --jobs 1 --all
     - save_cache:
         key: project-cache
         paths:

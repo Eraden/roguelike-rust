@@ -4,7 +4,6 @@ use game::app::WindowCanvas;
 use game::events::UpdateResult;
 use game::main_renderer::MainRenderer;
 use game::sprites::*;
-use game::sprites::player_sprite::*;
 use game::sprites::choose_character_button_sprite::*;
 use game::sprites::ClickHandler;
 use game::states::State;

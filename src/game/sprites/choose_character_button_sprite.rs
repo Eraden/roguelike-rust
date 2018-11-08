@@ -50,13 +50,15 @@ impl<'a> RenderPosition for ChooseCharacterButtonBackground<'a> {
 }
 
 impl<'a> ClickHandler for ChooseCharacterButtonBackground<'a> {
-    fn handle_click(&mut self, event: &Event) -> UpdateResult {
+    fn handle_click(&mut self, _event: &Event) -> UpdateResult {
         UpdateResult::NoOp
     }
 }
 
 impl<'a> Sprite<'a> for ChooseCharacterButtonBackground<'a> {
-    fn update(&mut self, ticks: i32) {}
+    fn update(&mut self, ticks: i32) {
+        self.animatable.animate(&ticks, 0, &mut self.renderable.dest);
+    }
 
     fn render(&mut self, canvas: &mut WindowCanvas, main_renderer: &mut MainRenderer<'a, 'a>) {
         self.renderable.render(canvas, main_renderer)
@@ -102,7 +104,7 @@ impl<'a> RenderPosition for ChooseCharacterButtonSprite<'a> {
 }
 
 impl<'a> ClickHandler for ChooseCharacterButtonSprite<'a> {
-    fn handle_click(&mut self, event: &Event) -> UpdateResult {
+    fn handle_click(&mut self, _event: &Event) -> UpdateResult {
         UpdateResult::NoOp
     }
 }

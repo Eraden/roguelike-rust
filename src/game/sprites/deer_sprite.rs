@@ -69,7 +69,7 @@ impl<'a> RenderPosition for DeerSprite<'a> {
     }
 
     fn move_to(&mut self, x: i32, y: i32) {
-        let mut dest = &mut self.renderable.dest;
+        let dest = &mut self.renderable.dest;
         dest.set_x(x);
         dest.set_y(y);
     }

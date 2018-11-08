@@ -19,12 +19,7 @@ impl<'a> GroundTile<'a> {
                 "./assets/textures/map-tiles.png",
                 config.render_tile.width as i32,
                 Rect::new(0, 0, 16, 16),
-                Rect::new(
-                    0,
-                    0,
-                    config.render_tile.width,
-                    config.render_tile.height,
-                ),
+                Rect::new(0, 0, config.render_tile.width, config.render_tile.height),
             ),
         }
     }

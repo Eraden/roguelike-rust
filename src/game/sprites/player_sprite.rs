@@ -1,6 +1,6 @@
-use game::sprites::*;
 use game::app::WindowCanvas;
 use game::main_renderer::MainRenderer;
+use game::sprites::*;
 use sdl2::rect::Rect;
 
 pub struct PlayerCharacterSprite<'a> {
@@ -104,13 +104,28 @@ impl<'a> Sprite<'a> for PlayerCharacterSprite<'a> {
     }
 
     fn render(&mut self, canvas: &mut WindowCanvas, main_renderer: &mut MainRenderer<'a, 'a>) {
-        self.renderable
-            .render(canvas, main_renderer);
+        self.renderable.render(canvas, main_renderer);
     }
 }
 
 #[macro_use]
-compose_sprite!(WarriorSprite, PlayerCharacterSprite, PlayerCharacterSprite::new_warrior);
-compose_sprite!(WizardSprite, PlayerCharacterSprite, PlayerCharacterSprite::new_wizard);
-compose_sprite!(RogueSprite, PlayerCharacterSprite, PlayerCharacterSprite::new_rogue);
-compose_sprite!(RangerSprite, PlayerCharacterSprite, PlayerCharacterSprite::new_ranger);
+compose_sprite!(
+    WarriorSprite,
+    PlayerCharacterSprite,
+    PlayerCharacterSprite::new_warrior
+);
+compose_sprite!(
+    WizardSprite,
+    PlayerCharacterSprite,
+    PlayerCharacterSprite::new_wizard
+);
+compose_sprite!(
+    RogueSprite,
+    PlayerCharacterSprite,
+    PlayerCharacterSprite::new_rogue
+);
+compose_sprite!(
+    RangerSprite,
+    PlayerCharacterSprite,
+    PlayerCharacterSprite::new_ranger
+);

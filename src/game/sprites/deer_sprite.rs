@@ -18,25 +18,29 @@ impl<'a> DeerSprite<'a> {
             path,
             32,
             Rect::new(0, 0, TILE_SIZE, TILE_SIZE),
-            Rect::new(
-                0,
-                0,
-                config.render_tile.width,
-                config.render_tile.height,
-            ),
+            Rect::new(0, 0, config.render_tile.width, config.render_tile.height),
         );
         let mut animatable = Animatable::new(5, 32);
         animatable.animation = Animation::Eating;
 
-        Self { renderable, animatable }
+        Self {
+            renderable,
+            animatable,
+        }
     }
 
     pub fn new_female(main_renderer: &mut MainRenderer<'a, 'a>) -> Self {
-        Self::new(main_renderer, "./assets/textures/deer female calciumtrice.png")
+        Self::new(
+            main_renderer,
+            "./assets/textures/deer female calciumtrice.png",
+        )
     }
 
     pub fn new_male(main_renderer: &mut MainRenderer<'a, 'a>) -> Self {
-        Self::new(main_renderer, "./assets/textures/deer male calciumtrice.png")
+        Self::new(
+            main_renderer,
+            "./assets/textures/deer male calciumtrice.png",
+        )
     }
 
     pub fn resize(&mut self, size: &u32) {

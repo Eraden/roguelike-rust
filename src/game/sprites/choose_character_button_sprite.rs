@@ -1,10 +1,10 @@
-use game::sprites::*;
+use game::app::WindowCanvas;
 use game::events::UpdateResult;
 use game::main_renderer::MainRenderer;
-use sdl2::rect::Rect;
-use sdl2::event::Event;
-use game::app::WindowCanvas;
 use game::sprites::player_sprite::*;
+use game::sprites::*;
+use sdl2::event::Event;
+use sdl2::rect::Rect;
 
 struct ChooseCharacterButtonBackground<'a> {
     renderable: Renderable<'a>,
@@ -20,11 +20,11 @@ impl<'a> ChooseCharacterButtonBackground<'a> {
             Rect::new(0, 0, 140, 140),
             Rect::new(0, 0, 140, 140),
         );
-        let animatable = Animatable::new(
-            1,
-            140,
-        );
-        Self { renderable, animatable }
+        let animatable = Animatable::new(1, 140);
+        Self {
+            renderable,
+            animatable,
+        }
     }
 }
 
@@ -57,7 +57,8 @@ impl<'a> ClickHandler for ChooseCharacterButtonBackground<'a> {
 
 impl<'a> Sprite<'a> for ChooseCharacterButtonBackground<'a> {
     fn update(&mut self, ticks: i32) {
-        self.animatable.animate(&ticks, 0, &mut self.renderable.dest);
+        self.animatable
+            .animate(&ticks, 0, &mut self.renderable.dest);
     }
 
     fn render(&mut self, canvas: &mut WindowCanvas, main_renderer: &mut MainRenderer<'a, 'a>) {
@@ -81,7 +82,10 @@ impl<'a> ChooseCharacterButtonSprite<'a> {
         };
         character_class.resize(&128);
         character_class.move_by(6, 6);
-        Self { background, character_class }
+        Self {
+            background,
+            character_class,
+        }
     }
 }
 

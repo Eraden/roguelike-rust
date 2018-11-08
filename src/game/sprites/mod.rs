@@ -1,8 +1,8 @@
 #[macro_use]
 pub mod prelude;
+pub mod choose_character_button_sprite;
 pub mod deer_sprite;
 pub mod ground_tile;
-pub mod choose_character_button_sprite;
 pub mod map_sprite;
 pub mod map_sprite_layer;
 pub mod map_sprite_tile;

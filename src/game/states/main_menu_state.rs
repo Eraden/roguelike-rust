@@ -40,7 +40,7 @@ impl<'a> State<'a> for MainMenuState<'a> {
             Event::MouseButtonDown { x, y, .. } => if self.quit_button.is_inside(&x, &y) {
                 UpdateResult::Stop
             } else if self.start_button.is_inside(&x, &y) {
-                //                UpdateResult::StartFirstMap
+//                UpdateResult::StartFirstMap
                 UpdateResult::PickCharacter
             } else {
                 UpdateResult::NoOp

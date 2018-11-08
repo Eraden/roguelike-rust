@@ -1,8 +1,7 @@
 use game::app::WindowCanvas;
 use game::main_renderer::MainRenderer;
-use game::sprites::female_deer_sprite::*;
+use game::sprites::deer_sprite::*;
 use game::sprites::ground_tile::*;
-use game::sprites::male_deer_sprite::*;
 use game::sprites::Sprite;
 
 pub enum MapSpriteTileType<'a> {

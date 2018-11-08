@@ -1,10 +1,13 @@
-pub mod female_deer_sprite;
+#[macro_use]
+pub mod prelude;
+pub mod deer_sprite;
 pub mod ground_tile;
-pub mod male_deer_sprite;
+pub mod choose_character_button_sprite;
 pub mod map_sprite;
 pub mod map_sprite_layer;
 pub mod map_sprite_tile;
 pub mod plant_tile;
+#[macro_use]
 pub mod player_sprite;
 pub mod quit_button;
 pub mod start_button;
@@ -21,7 +24,7 @@ use std::rc::Rc;
 pub enum PlayerClass {
     Warrior,
     Wizard,
-    Rouge,
+    Rogue,
     Ranger,
 }
 
@@ -68,6 +71,7 @@ pub trait AnimationRowResolver {
     fn resolve_y(&self, animation: &Animation) -> i32;
 }
 
+#[derive(Clone, Debug)]
 pub struct Animatable {
     animation: Animation,
     frames_per_animation: i32,
@@ -151,7 +155,14 @@ pub trait Sprite<'a> {
 }
 
 pub trait RenderPosition {
+    /** Move sprite by it's texture size */
     fn render_on(&mut self, x: &usize, y: &usize);
+
+    /** Move by pixels */
+    fn move_by(&mut self, x: i32, y: i32);
+
+    /** Move to coords in pixels */
+    fn move_to(&mut self, x: i32, y: i32);
 }
 
 fn check_is_inside(x: &i32, y: &i32, rect: &Rect) -> bool {

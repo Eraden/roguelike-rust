@@ -5,7 +5,7 @@ use game::map::layer_type::*;
 use game::map::map::*;
 use game::map::tile_type::*;
 use game::map::*;
-use game::sprites::female_deer_sprite::FemaleDeerSprite;
+use game::sprites::deer_sprite::FemaleDeerSprite;
 use game::sprites::ground_tile::GroundTile;
 use game::sprites::map_sprite_layer::*;
 use game::sprites::map_sprite_tile::*;
@@ -13,7 +13,8 @@ use game::sprites::{RenderPosition, Sprite};
 
 use std::vec::Vec;
 
-use game::sprites::male_deer_sprite::MaleDeerSprite;
+//use game::sprites::male_deer_sprite::MaleDeerSprite;
+use game::sprites::deer_sprite::MaleDeerSprite;
 use sdl2::rect::Rect;
 
 enum LoadTarget {

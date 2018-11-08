@@ -1,16 +1,16 @@
+use game::sprites::*;
 use game::app::WindowCanvas;
 use game::main_renderer::MainRenderer;
-use game::sprites::*;
 use sdl2::rect::Rect;
 
 pub struct PlayerCharacterSprite<'a> {
     pub gender: Gender,
-    renderable: Renderable<'a>,
     animatable: Animatable,
+    renderable: Renderable<'a>,
 }
 
 impl<'a> PlayerCharacterSprite<'a> {
-    pub fn new(main_renderer: &mut MainRenderer<'a, 'a>, spritesheet: &str) -> Self {
+    fn new(main_renderer: &mut MainRenderer<'a, 'a>, spritesheet: &str) -> Self {
         let config = { main_renderer.config.clone() };
         Self {
             gender: Gender::Female,
@@ -80,6 +80,20 @@ impl<'a> RenderPosition for PlayerCharacterSprite<'a> {
         let tile_size: i32 = self.renderable.dest_size();
         render_on(&mut self.renderable.dest, &(tile_size as usize), x, y);
     }
+
+    fn move_by(&mut self, x: i32, y: i32) {
+        let dest = &mut self.renderable.dest;
+        let c = { dest.clone() };
+        let (dx, dy) = { (c.x(), c.y()) };
+        dest.set_x(dx + x);
+        dest.set_y(dy + y);
+    }
+
+    fn move_to(&mut self, x: i32, y: i32) {
+        let dest = &mut self.renderable.dest;
+        dest.set_x(x);
+        dest.set_y(y);
+    }
 }
 
 impl<'a> Sprite<'a> for PlayerCharacterSprite<'a> {
@@ -90,51 +104,13 @@ impl<'a> Sprite<'a> for PlayerCharacterSprite<'a> {
     }
 
     fn render(&mut self, canvas: &mut WindowCanvas, main_renderer: &mut MainRenderer<'a, 'a>) {
-        self.renderable.render(canvas, main_renderer);
+        self.renderable
+            .render(canvas, main_renderer);
     }
 }
 
-macro_rules! player_sprite {
-    ($class_name: ident, $builder: expr) => {
-        pub struct $class_name<'a> {
-            player_character: PlayerCharacterSprite<'a>,
-        }
-
-        impl<'a> $class_name<'a> {
-            pub fn new(main_renderer: &mut MainRenderer<'a, 'a>) -> Self {
-                Self {
-                    player_character: $builder(main_renderer),
-                }
-            }
-
-            pub fn resize(&mut self, size: &u32) {
-                self.player_character.resize(size);
-            }
-        }
-
-        impl<'a> RenderPosition for $class_name<'a> {
-            fn render_on(&mut self, x: &usize, y: &usize) {
-                self.player_character.render_on(x, y);
-            }
-        }
-
-        impl<'a> Sprite<'a> for $class_name<'a> {
-            fn update(&mut self, ticks: i32) {
-                self.player_character.update(ticks);
-            }
-
-            fn render(
-                &mut self,
-                canvas: &mut WindowCanvas,
-                main_renderer: &mut MainRenderer<'a, 'a>,
-            ) {
-                self.player_character.render(canvas, main_renderer);
-            }
-        }
-    };
-}
-
-player_sprite!(WarriorSprite, PlayerCharacterSprite::new_warrior);
-player_sprite!(WizardSprite, PlayerCharacterSprite::new_wizard);
-player_sprite!(RogueSprite, PlayerCharacterSprite::new_rogue);
-player_sprite!(RangerSprite, PlayerCharacterSprite::new_ranger);
+#[macro_use]
+compose_sprite!(WarriorSprite, PlayerCharacterSprite, PlayerCharacterSprite::new_warrior);
+compose_sprite!(WizardSprite, PlayerCharacterSprite, PlayerCharacterSprite::new_wizard);
+compose_sprite!(RogueSprite, PlayerCharacterSprite, PlayerCharacterSprite::new_rogue);
+compose_sprite!(RangerSprite, PlayerCharacterSprite, PlayerCharacterSprite::new_ranger);

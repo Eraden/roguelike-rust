@@ -69,9 +69,3 @@ fn main() {
     layer_generator::generate_layers(&details, &mut buffer);
     write(path, buffer).unwrap();
 }
-
-//#[cfg(test)]
-//mod tests {
-//    use super::*;
-//
-//}

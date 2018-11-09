@@ -1,8 +1,7 @@
 use game::app::WindowCanvas;
 use game::main_renderer::MainRenderer;
 use game::managers::FontDetails;
-use game::sprites::check_is_inside;
-use game::sprites::Sprite;
+use game::sprites::*;
 use game::ui::render_text;
 use sdl2::rect::Rect;
 use sdl2::render::Texture;

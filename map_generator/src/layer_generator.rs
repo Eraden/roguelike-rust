@@ -147,4 +147,11 @@ mod tests {
         assert_eq!(resolve_max("-", &11), 11 + 5);
         assert_eq!(resolve_max("+", &11), 11 + 5);
     }
+
+    #[test]
+    fn it_stringify_stream() {
+        let stream: Vec<Vec<i32>> = vec![vec![1, 2, 3, 4], vec![9, 8, 7, 6]];
+        let s: String = stringify_stream(&stream);
+        assert_eq!(s, "1 2 3 4\n9 8 7 6");
+    }
 }

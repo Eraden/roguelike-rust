@@ -57,6 +57,10 @@ impl<'a> PlayerCharacterSprite<'a> {
         self.renderable.dest_size = size.clone() as i32;
         self.renderable.dest = Rect::new(0, 0, size.clone(), size.clone());
     }
+
+    pub fn set_gender(&mut self, gender: Gender) {
+        self.gender = gender;
+    }
 }
 
 impl<'a> AnimationRowResolver for PlayerCharacterSprite<'a> {

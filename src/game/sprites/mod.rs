@@ -15,13 +15,14 @@ pub mod start_button;
 use game::app::WindowCanvas;
 use game::events::UpdateResult;
 use game::main_renderer::MainRenderer;
-use sdl2::event::Event;
 use sdl2::rect::Rect;
 use sdl2::render::Texture;
 use std::rc::Rc;
+use sdl2::event::Event;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub enum PlayerClass {
+    NoCharacter,
     Warrior,
     Wizard,
     Rogue,
@@ -42,7 +43,7 @@ pub enum Animation {
     Attacking,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub enum Gender {
     Male,
     Female,

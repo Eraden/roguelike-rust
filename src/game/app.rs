@@ -9,7 +9,7 @@ use sdl2::pixels::Color;
 use sdl2::render::Canvas;
 use sdl2::video::Window;
 use sdl2::EventPump;
-use sdl2::{Sdl, TimerSubsystem, VideoSubsystem};
+use sdl2::{Sdl, TimerSubsystem};
 
 use game::config::Config;
 use game::events::UpdateResult;
@@ -22,10 +22,9 @@ use game::states::State;
 pub type WindowCanvas = Canvas<Window>;
 
 pub struct App {
-    pub sdl_context: Sdl,
-    pub video_subsystem: VideoSubsystem,
-    pub canvas: WindowCanvas,
-    pub config: Config,
+    sdl_context: Sdl,
+    canvas: WindowCanvas,
+    config: Config,
 }
 
 pub enum AppState<'a> {
@@ -49,9 +48,8 @@ impl<'a> App {
 
         let canvas = window.into_canvas().accelerated().build().unwrap();
 
-        App {
+        Self {
             sdl_context,
-            video_subsystem,
             canvas,
             config,
         }
@@ -62,10 +60,10 @@ impl<'a> App {
     }
 
     pub fn main_loop(&mut self) {
+        let mut timer: TimerSubsystem = self.sdl_context.timer().unwrap();
         let mut event_pump = self.sdl_context.event_pump().unwrap();
         let texture_creator = self.canvas.texture_creator();
         let font_context = sdl2::ttf::init().unwrap();
-        let mut timer: TimerSubsystem = self.sdl_context.timer().unwrap();
         let sleep_time = Duration::new(0, 1_000_000_000u32 / 60);
 
         let mut main_renderer =

@@ -23,7 +23,7 @@ pub struct FontDetails {
 
 impl FontDetails {
     pub fn new(path: &str, size: u16) -> FontDetails {
-        FontDetails {
+        Self {
             path: path.to_string(),
             size,
         }
@@ -32,7 +32,7 @@ impl FontDetails {
 
 impl<'a> From<&'a FontDetails> for FontDetails {
     fn from(details: &'a FontDetails) -> Self {
-        FontDetails {
+        Self {
             path: details.path.clone(),
             size: details.size,
         }
@@ -58,7 +58,7 @@ where
     L: ResourceLoader<'l, R>,
 {
     pub fn new(loader: &'l L) -> Self {
-        ResourceManager {
+        Self {
             cache: HashMap::new(),
             loader,
         }

@@ -30,7 +30,7 @@ impl<'a, 'b> MainRenderer<'a, 'b> {
         font_context: &'a Sdl2TtfContext,
         texture_creator: &'b TextureCreator<WindowContext>,
     ) -> Self {
-        MainRenderer {
+        Self {
             config,
             font_manager: FontManager::new(&font_context),
             texture_manager: TextureManager::new(&texture_creator),

@@ -119,11 +119,9 @@ impl<'a> ChooseCharacterButtonSprite<'a> {
     }
 
     pub fn on_update(&mut self, chosen: (&PlayerClass, &Gender)) -> UpdateResult {
-        self.background
-            .change_selected(
-                *chosen.0 == self.player_class &&
-                    *chosen.1 == self.character_class.gender
-            );
+        self.background.change_selected(
+            *chosen.0 == self.player_class && *chosen.1 == self.character_class.gender,
+        );
         UpdateResult::NoOp
     }
 

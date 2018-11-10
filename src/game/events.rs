@@ -1,5 +1,5 @@
-use game::sprites::PlayerClass;
 use game::sprites::Gender;
+use game::sprites::PlayerClass;
 
 #[derive(Debug, PartialEq)]
 pub enum UpdateResult {
@@ -7,5 +7,5 @@ pub enum UpdateResult {
     Stop,
     StartFirstMap,
     PickCharacter,
-    PlayerCharacterClicked(PlayerClass, Gender)
+    PlayerCharacterClicked(PlayerClass, Gender),
 }

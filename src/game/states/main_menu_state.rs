@@ -1,5 +1,4 @@
-use game::sprites::quit_button::*;
-use game::sprites::start_button::*;
+use game::sprites::button::*;
 use game::sprites::Sprite;
 
 use game::app::WindowCanvas;
@@ -10,14 +9,17 @@ use game::states::State;
 use sdl2::event::Event;
 
 pub struct MainMenuState<'a> {
-    pub start_button: StartButtonSprite<'a>,
-    pub quit_button: QuitButtonSprite<'a>,
+    start_button: ButtonSprite<'a>,
+    quit_button: ButtonSprite<'a>,
 }
 
 impl<'a> MainMenuState<'a> {
     pub fn new(main_renderer: &mut MainRenderer<'a, 'a>) -> Self {
-        let start_button = StartButtonSprite::new(main_renderer);
-        let quit_button = QuitButtonSprite::new(main_renderer);
+        let config = { main_renderer.config.clone() };
+        let mut start_button = ButtonSprite::new(main_renderer, "Start", 0, (config.height - 350) as i32);
+        start_button.center_x(&config);
+        let mut quit_button = ButtonSprite::new(main_renderer, "Quit", 0, (config.height - 200) as i32);
+        quit_button.center_x(&config);
         MainMenuState {
             start_button,
             quit_button,

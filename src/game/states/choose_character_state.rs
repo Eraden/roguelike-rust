@@ -27,11 +27,13 @@ impl<'a> ChooseCharacterState<'a> {
         use game::sprites::RenderPosition;
 
         // Female
-        let mut female_warrior = ChooseCharacterButtonSprite::new(main_renderer, PlayerClass::Warrior);
+        let mut female_warrior =
+            ChooseCharacterButtonSprite::new(main_renderer, PlayerClass::Warrior);
         female_warrior.set_gender(Gender::Female);
         female_warrior.render_on(&1, &2);
 
-        let mut female_wizard = ChooseCharacterButtonSprite::new(main_renderer, PlayerClass::Wizard);
+        let mut female_wizard =
+            ChooseCharacterButtonSprite::new(main_renderer, PlayerClass::Wizard);
         female_wizard.set_gender(Gender::Female);
         female_wizard.render_on(&2, &2);
 
@@ -39,12 +41,14 @@ impl<'a> ChooseCharacterState<'a> {
         female_rogue.set_gender(Gender::Female);
         female_rogue.render_on(&3, &2);
 
-        let mut female_ranger = ChooseCharacterButtonSprite::new(main_renderer, PlayerClass::Ranger);
+        let mut female_ranger =
+            ChooseCharacterButtonSprite::new(main_renderer, PlayerClass::Ranger);
         female_ranger.set_gender(Gender::Female);
         female_ranger.render_on(&4, &2);
 
         // Male
-        let mut male_warrior = ChooseCharacterButtonSprite::new(main_renderer, PlayerClass::Warrior);
+        let mut male_warrior =
+            ChooseCharacterButtonSprite::new(main_renderer, PlayerClass::Warrior);
         male_warrior.set_gender(Gender::Male);
         male_warrior.render_on(&1, &3);
 
@@ -120,6 +124,7 @@ impl<'a> State<'a> for ChooseCharacterState<'a> {
         let res = match *event {
             Event::MouseButtonDown { x, y, .. } =>
             // Female
+            {
                 if self.female_warrior.check_is_inside(&x, &y) {
                     self.female_warrior.handle_click(event)
                 } else if self.female_wizard.check_is_inside(&x, &y) {
@@ -128,7 +133,7 @@ impl<'a> State<'a> for ChooseCharacterState<'a> {
                     self.female_ranger.handle_click(event)
                 } else if self.female_rogue.check_is_inside(&x, &y) {
                     self.female_rogue.handle_click(event)
-                    // Male
+                // Male
                 } else if self.male_warrior.check_is_inside(&x, &y) {
                     self.male_warrior.handle_click(event)
                 } else if self.male_wizard.check_is_inside(&x, &y) {
@@ -139,8 +144,9 @@ impl<'a> State<'a> for ChooseCharacterState<'a> {
                     self.male_rogue.handle_click(event)
                 } else {
                     UpdateResult::NoOp
-                },
-            _ => UpdateResult::NoOp
+                }
+            }
+            _ => UpdateResult::NoOp,
         };
         match res {
             UpdateResult::PlayerCharacterClicked(ref player_character, ref gender) => {

@@ -8,15 +8,27 @@ const WIZARD_TEXTURE: &'static str = "./assets/textures/wizard spritesheet calci
 const ROGUE_TEXTURE: &'static str = "./assets/textures/rogue spritesheet calciumtrice.png";
 const RANGER_TEXTURE: &'static str = "./assets/textures/ranger spritesheet calciumtrice.png";
 
+fn resolve_texture(player_class: &PlayerClass) -> &str {
+    match player_class {
+        PlayerClass::Warrior => WARRIOR_TEXTURE,
+        PlayerClass::Wizard => WIZARD_TEXTURE,
+        PlayerClass::Rogue => ROGUE_TEXTURE,
+        PlayerClass::Ranger => RANGER_TEXTURE,
+    }
+}
+
 pub struct PlayerCharacterSprite<'a> {
     pub gender: Gender,
     animatable: Animatable,
     renderable: Renderable<'a>,
+    #[allow(dead_code)]
+    player_class: PlayerClass,
 }
 
 impl<'a> PlayerCharacterSprite<'a> {
-    fn new(main_renderer: &mut MainRenderer<'a, 'a>, spritesheet: &str) -> Self {
+    fn new(main_renderer: &mut MainRenderer<'a, 'a>, player_class: PlayerClass) -> Self {
         let config = { main_renderer.config.clone() };
+        let spritesheet = resolve_texture(&player_class);
         Self {
             gender: Gender::Female,
             animatable: Animatable::new(5, 32),
@@ -27,23 +39,24 @@ impl<'a> PlayerCharacterSprite<'a> {
                 Rect::new(0, 0, 32, 32),
                 Rect::new(0, 0, config.render_tile.width, config.render_tile.height),
             ),
+            player_class: player_class.clone(),
         }
     }
 
     pub fn new_warrior(main_renderer: &mut MainRenderer<'a, 'a>) -> Self {
-        PlayerCharacterSprite::new(main_renderer, WARRIOR_TEXTURE)
+        PlayerCharacterSprite::new(main_renderer, PlayerClass::Warrior)
     }
 
     pub fn new_wizard(main_renderer: &mut MainRenderer<'a, 'a>) -> Self {
-        PlayerCharacterSprite::new(main_renderer, WIZARD_TEXTURE)
+        PlayerCharacterSprite::new(main_renderer, PlayerClass::Wizard)
     }
 
     pub fn new_rogue(main_renderer: &mut MainRenderer<'a, 'a>) -> Self {
-        PlayerCharacterSprite::new(main_renderer, ROGUE_TEXTURE)
+        PlayerCharacterSprite::new(main_renderer, PlayerClass::Rogue)
     }
 
     pub fn new_ranger(main_renderer: &mut MainRenderer<'a, 'a>) -> Self {
-        PlayerCharacterSprite::new(main_renderer, RANGER_TEXTURE)
+        PlayerCharacterSprite::new(main_renderer, PlayerClass::Ranger)
     }
 
     pub fn resize(&mut self, size: &u32) {
@@ -104,25 +117,3 @@ impl<'a> Sprite<'a> for PlayerCharacterSprite<'a> {
         self.renderable.render(canvas, main_renderer);
     }
 }
-
-#[macro_use]
-compose_sprite!(
-    WarriorSprite,
-    PlayerCharacterSprite,
-    PlayerCharacterSprite::new_warrior
-);
-compose_sprite!(
-    WizardSprite,
-    PlayerCharacterSprite,
-    PlayerCharacterSprite::new_wizard
-);
-compose_sprite!(
-    RogueSprite,
-    PlayerCharacterSprite,
-    PlayerCharacterSprite::new_rogue
-);
-compose_sprite!(
-    RangerSprite,
-    PlayerCharacterSprite,
-    PlayerCharacterSprite::new_ranger
-);

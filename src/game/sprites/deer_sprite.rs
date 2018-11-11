@@ -4,14 +4,25 @@ use game::sprites::*;
 use sdl2::rect::Rect;
 
 const TILE_SIZE: u32 = 32;
+const FEMALE_TEXTURE: &'static str = "./assets/textures/deer female calciumtrice.png";
+const MALE_TEXTURE: &'static str = "./assets/textures/deer male calciumtrice.png";
+
+fn resolve_texture(gender: &Gender) -> &str {
+    match gender {
+        Gender::Female => FEMALE_TEXTURE,
+        Gender::Male => MALE_TEXTURE,
+    }
+}
 
 pub struct DeerSprite<'a> {
     animatable: Animatable,
     renderable: Renderable<'a>,
+    gender: Gender,
 }
 
 impl<'a> DeerSprite<'a> {
-    fn new(main_renderer: &mut MainRenderer<'a, 'a>, path: &str) -> Self {
+    fn new(main_renderer: &mut MainRenderer<'a, 'a>, gender: Gender) -> Self {
+        let path = resolve_texture(&gender);
         let config = { main_renderer.config.clone() };
         let renderable = Renderable::new(
             main_renderer,
@@ -26,20 +37,21 @@ impl<'a> DeerSprite<'a> {
         Self {
             renderable,
             animatable,
+            gender: gender.clone(),
         }
     }
 
     pub fn new_female(main_renderer: &mut MainRenderer<'a, 'a>) -> Self {
         Self::new(
             main_renderer,
-            "./assets/textures/deer female calciumtrice.png",
+            Gender::Female,
         )
     }
 
     pub fn new_male(main_renderer: &mut MainRenderer<'a, 'a>) -> Self {
         Self::new(
             main_renderer,
-            "./assets/textures/deer male calciumtrice.png",
+            Gender::Male,
         )
     }
 

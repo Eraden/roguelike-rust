@@ -16,9 +16,11 @@ pub struct MainMenuState<'a> {
 impl<'a> MainMenuState<'a> {
     pub fn new(main_renderer: &mut MainRenderer<'a, 'a>) -> Self {
         let config = { main_renderer.config.clone() };
-        let mut start_button = ButtonSprite::new(main_renderer, "Start", 0, (config.height - 350) as i32);
+        let mut start_button =
+            ButtonSprite::new(main_renderer, "Start", 0, (config.height - 350) as i32);
         start_button.center_x(&config);
-        let mut quit_button = ButtonSprite::new(main_renderer, "Quit", 0, (config.height - 200) as i32);
+        let mut quit_button =
+            ButtonSprite::new(main_renderer, "Quit", 0, (config.height - 200) as i32);
         quit_button.center_x(&config);
         MainMenuState {
             start_button,

@@ -3,6 +3,11 @@ use game::main_renderer::MainRenderer;
 use game::sprites::*;
 use sdl2::rect::Rect;
 
+const WARRIOR_TEXTURE: &'static str = "./assets/textures/warrior spritesheet calciumtrice.png";
+const WIZARD_TEXTURE: &'static str = "./assets/textures/wizard spritesheet calciumtrice.png";
+const ROGUE_TEXTURE: &'static str = "./assets/textures/rogue spritesheet calciumtrice.png";
+const RANGER_TEXTURE: &'static str = "./assets/textures/ranger spritesheet calciumtrice.png";
+
 pub struct PlayerCharacterSprite<'a> {
     pub gender: Gender,
     animatable: Animatable,
@@ -26,31 +31,19 @@ impl<'a> PlayerCharacterSprite<'a> {
     }
 
     pub fn new_warrior(main_renderer: &mut MainRenderer<'a, 'a>) -> Self {
-        PlayerCharacterSprite::new(
-            main_renderer,
-            "./assets/textures/warrior spritesheet calciumtrice.png",
-        )
+        PlayerCharacterSprite::new(main_renderer, WARRIOR_TEXTURE)
     }
 
     pub fn new_wizard(main_renderer: &mut MainRenderer<'a, 'a>) -> Self {
-        PlayerCharacterSprite::new(
-            main_renderer,
-            "./assets/textures/wizard spritesheet calciumtrice.png",
-        )
+        PlayerCharacterSprite::new(main_renderer, WIZARD_TEXTURE)
     }
 
     pub fn new_rogue(main_renderer: &mut MainRenderer<'a, 'a>) -> Self {
-        PlayerCharacterSprite::new(
-            main_renderer,
-            "./assets/textures/rogue spritesheet calciumtrice.png",
-        )
+        PlayerCharacterSprite::new(main_renderer, ROGUE_TEXTURE)
     }
 
     pub fn new_ranger(main_renderer: &mut MainRenderer<'a, 'a>) -> Self {
-        PlayerCharacterSprite::new(
-            main_renderer,
-            "./assets/textures/ranger spritesheet calciumtrice.png",
-        )
+        PlayerCharacterSprite::new(main_renderer, RANGER_TEXTURE)
     }
 
     pub fn resize(&mut self, size: &u32) {

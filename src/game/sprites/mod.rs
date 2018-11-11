@@ -21,7 +21,6 @@ use std::rc::Rc;
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum PlayerClass {
-    NoCharacter,
     Warrior,
     Wizard,
     Rogue,

@@ -1,4 +1,5 @@
 use game::app::WindowCanvas;
+use game::config::Config;
 use game::main_renderer::MainRenderer;
 use game::managers::FontDetails;
 use game::sprites::*;
@@ -6,7 +7,6 @@ use game::ui::render_text;
 use sdl2::rect::Rect;
 use sdl2::render::Texture;
 use std::rc::Rc;
-use game::config::Config;
 
 const TEXT_MARGIN: u32 = 40;
 
@@ -38,18 +38,8 @@ impl<'a> ButtonSprite<'a> {
 
         let background_width: u32 = text_width + (TEXT_MARGIN * 2);
 
-        let text_dest = Rect::new(
-            left + TEXT_MARGIN as i32,
-            top - 5,
-            text_width,
-            text_height,
-        );
-        let background_dest = Rect::new(
-            left,
-            top,
-            background_width,
-            100,
-        );
+        let text_dest = Rect::new(left + TEXT_MARGIN as i32, top - 5, text_width, text_height);
+        let background_dest = Rect::new(left, top, background_width, 100);
 
         Self {
             text_texture,
@@ -69,8 +59,10 @@ impl<'a> ButtonSprite<'a> {
     pub fn center_x(&mut self, config: &Config) {
         let text_width = self.text_width.clone();
         let background_width: u32 = text_width + (TEXT_MARGIN * 2);
-        self.text_dest.set_x(((config.width / 2) - (text_width / 2)) as i32);
-        self.background_dest.set_x(((config.width / 2) - (background_width / 2)) as i32);
+        self.text_dest
+            .set_x(((config.width / 2) - (text_width / 2)) as i32);
+        self.background_dest
+            .set_x(((config.width / 2) - (background_width / 2)) as i32);
     }
 }
 

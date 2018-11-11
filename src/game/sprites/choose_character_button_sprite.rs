@@ -103,7 +103,6 @@ impl<'a> ChooseCharacterButtonSprite<'a> {
             PlayerClass::Wizard => PlayerCharacterSprite::new_wizard(main_renderer),
             PlayerClass::Rogue => PlayerCharacterSprite::new_rogue(main_renderer),
             PlayerClass::Ranger => PlayerCharacterSprite::new_ranger(main_renderer),
-            _ => panic!("Invalid character type"),
         };
         character_class.resize(&128);
         character_class.move_by(6, 6);

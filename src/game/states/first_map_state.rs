@@ -35,4 +35,8 @@ impl<'a> State<'a> for FirstMapState<'a> {
     fn handle_key_down(&mut self, _event: &Event) -> UpdateResult {
         UpdateResult::NoOp
     }
+
+    fn handle_mouse_move(&mut self, _event: &Event) -> UpdateResult {
+        UpdateResult::NoOp
+    }
 }

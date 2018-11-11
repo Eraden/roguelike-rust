@@ -7,3 +7,9 @@ pub mod map;
 pub mod sprites;
 pub mod states;
 pub mod ui;
+
+#[derive(Debug, PartialEq, Clone)]
+pub struct MousePosition {
+    x: u32,
+    y: u32,
+}

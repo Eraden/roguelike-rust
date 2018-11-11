@@ -125,6 +125,11 @@ impl<'a> App {
                     AppState::FirstMap(state) => return state.handle_click(&event),
                     AppState::ChooseCharacter(state) => return state.handle_click(&event),
                 },
+                Event::MouseMotion { .. } => match app_state {
+                    AppState::MainMenu(state) => return state.handle_mouse_move(&event),
+                    AppState::FirstMap(state) => return state.handle_mouse_move(&event),
+                    AppState::ChooseCharacter(state) => return state.handle_mouse_move(&event),
+                },
                 _ => {}
             };
         }

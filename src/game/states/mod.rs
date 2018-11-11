@@ -13,4 +13,5 @@ pub trait State<'a> {
     fn render(&mut self, canvas: &mut WindowCanvas, main_renderer: &mut MainRenderer<'a, 'a>);
     fn handle_click(&mut self, event: &Event) -> UpdateResult;
     fn handle_key_down(&mut self, event: &Event) -> UpdateResult;
+    fn handle_mouse_move(&mut self, event: &Event) -> UpdateResult;
 }

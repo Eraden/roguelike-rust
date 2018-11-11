@@ -5,10 +5,15 @@ use game::events::UpdateResult;
 use game::main_renderer::MainRenderer;
 use game::sprites::button::ButtonSprite;
 use game::sprites::choose_character_button_sprite::*;
-use game::sprites::ClickHandler;
 use game::sprites::*;
 use game::states::State;
+use game::MousePosition;
 use sdl2::event::Event;
+
+struct Chosen {
+    character: PlayerClass,
+    gender: Gender,
+}
 
 pub struct ChooseCharacterState<'a> {
     female_warrior: ChooseCharacterButtonSprite<'a>,
@@ -20,8 +25,8 @@ pub struct ChooseCharacterState<'a> {
     female_ranger: ChooseCharacterButtonSprite<'a>,
     male_ranger: ChooseCharacterButtonSprite<'a>,
     continue_button: ButtonSprite<'a>,
-    pub chosen_character: PlayerClass,
-    pub chosen_gender: Gender,
+    chosen: Chosen,
+    mouse_position: MousePosition,
 }
 
 impl<'a> ChooseCharacterState<'a> {
@@ -96,23 +101,43 @@ impl<'a> ChooseCharacterState<'a> {
             male_rogue,
             male_ranger,
             continue_button,
-            chosen_character,
-            chosen_gender,
+            chosen: Chosen {
+                character: chosen_character,
+                gender: chosen_gender,
+            },
+            mouse_position: MousePosition { x: 0, y: 0 },
         }
     }
 
+    pub fn chosen_character(&self) -> PlayerClass {
+        self.chosen.character.clone()
+    }
+
+    pub fn chosen_gender(&self) -> Gender {
+        self.chosen.gender.clone()
+    }
+
     pub fn on_update(&mut self) {
-        let chosen = (&self.chosen_character, &self.chosen_gender);
-        // Female
-        self.female_warrior.on_update(chosen);
-        self.female_wizard.on_update(chosen);
-        self.female_rogue.on_update(chosen);
-        self.female_ranger.on_update(chosen);
-        // Male
-        self.male_warrior.on_update(chosen);
-        self.male_wizard.on_update(chosen);
-        self.male_rogue.on_update(chosen);
-        self.male_ranger.on_update(chosen);
+        let chosen = { (&self.chosen_character(), &self.chosen_gender()) };
+        for current in [
+            &mut self.female_warrior,
+            &mut self.female_wizard,
+            &mut self.female_rogue,
+            &mut self.female_ranger,
+            &mut self.male_warrior,
+            &mut self.male_wizard,
+            &mut self.male_rogue,
+            &mut self.male_ranger,
+        ]
+            .iter_mut()
+            {
+                current.on_update(chosen);
+            }
+    }
+
+    fn emit_character_picked(&self, button: &ChooseCharacterButtonSprite) -> UpdateResult {
+        let picked_type = button.get_type();
+        UpdateResult::PlayerCharacterClicked(picked_type.0, picked_type.1)
     }
 }
 
@@ -149,36 +174,36 @@ impl<'a> State<'a> for ChooseCharacterState<'a> {
         let res = match *event {
             Event::MouseButtonDown { x, y, .. } =>
             // Female
-            {
-                if self.female_warrior.check_is_inside(&x, &y) {
-                    self.female_warrior.handle_click(event)
-                } else if self.female_wizard.check_is_inside(&x, &y) {
-                    self.female_wizard.handle_click(event)
-                } else if self.female_ranger.check_is_inside(&x, &y) {
-                    self.female_ranger.handle_click(event)
-                } else if self.female_rogue.check_is_inside(&x, &y) {
-                    self.female_rogue.handle_click(event)
-                // Male
-                } else if self.male_warrior.check_is_inside(&x, &y) {
-                    self.male_warrior.handle_click(event)
-                } else if self.male_wizard.check_is_inside(&x, &y) {
-                    self.male_wizard.handle_click(event)
-                } else if self.male_ranger.check_is_inside(&x, &y) {
-                    self.male_ranger.handle_click(event)
-                } else if self.male_rogue.check_is_inside(&x, &y) {
-                    self.male_rogue.handle_click(event)
-                } else if self.continue_button.is_inside(&x, &y) {
-                    UpdateResult::NoOp
-                } else {
-                    UpdateResult::NoOp
+                {
+                    if self.female_warrior.check_is_inside(&x, &y) {
+                        self.emit_character_picked(&self.female_warrior)
+                    } else if self.female_wizard.check_is_inside(&x, &y) {
+                        self.emit_character_picked(&self.female_wizard)
+                    } else if self.female_ranger.check_is_inside(&x, &y) {
+                        self.emit_character_picked(&self.female_ranger)
+                    } else if self.female_rogue.check_is_inside(&x, &y) {
+                        self.emit_character_picked(&self.female_rogue)
+                        // Male
+                    } else if self.male_warrior.check_is_inside(&x, &y) {
+                        self.emit_character_picked(&self.male_warrior)
+                    } else if self.male_wizard.check_is_inside(&x, &y) {
+                        self.emit_character_picked(&self.male_wizard)
+                    } else if self.male_ranger.check_is_inside(&x, &y) {
+                        self.emit_character_picked(&self.male_ranger)
+                    } else if self.male_rogue.check_is_inside(&x, &y) {
+                        self.emit_character_picked(&self.male_rogue)
+                    } else if self.continue_button.is_inside(&x, &y) {
+                        UpdateResult::NoOp
+                    } else {
+                        UpdateResult::NoOp
+                    }
                 }
-            }
             _ => UpdateResult::NoOp,
         };
         match res {
             UpdateResult::PlayerCharacterClicked(ref player_character, ref gender) => {
-                self.chosen_character = player_character.clone();
-                self.chosen_gender = gender.clone();
+                self.chosen.character = player_character.clone();
+                self.chosen.gender = gender.clone();
                 self.on_update();
             }
             _ => (),
@@ -188,5 +213,60 @@ impl<'a> State<'a> for ChooseCharacterState<'a> {
 
     fn handle_key_down(&mut self, _event: &Event) -> UpdateResult {
         UpdateResult::NoOp
+    }
+
+    fn handle_mouse_move(&mut self, event: &Event) -> UpdateResult {
+        let res = match event {
+            Event::MouseMotion { x, y, .. } => {
+                self.mouse_position.x = x.clone() as u32;
+                self.mouse_position.y = y.clone() as u32;
+                if self.female_warrior.check_is_inside(&x, &y) {
+                    UpdateResult::AboveButton(self.mouse_position.clone())
+                } else if self.female_wizard.check_is_inside(&x, &y) {
+                    UpdateResult::AboveButton(self.mouse_position.clone())
+                } else if self.female_ranger.check_is_inside(&x, &y) {
+                    UpdateResult::AboveButton(self.mouse_position.clone())
+                } else if self.female_rogue.check_is_inside(&x, &y) {
+                    UpdateResult::AboveButton(self.mouse_position.clone())
+                    // Male
+                } else if self.male_warrior.check_is_inside(&x, &y) {
+                    UpdateResult::AboveButton(self.mouse_position.clone())
+                } else if self.male_wizard.check_is_inside(&x, &y) {
+                    UpdateResult::AboveButton(self.mouse_position.clone())
+                } else if self.male_ranger.check_is_inside(&x, &y) {
+                    UpdateResult::AboveButton(self.mouse_position.clone())
+                } else if self.male_rogue.check_is_inside(&x, &y) {
+                    UpdateResult::AboveButton(self.mouse_position.clone())
+                } else if self.continue_button.is_inside(&x, &y) {
+                    UpdateResult::AboveButton(self.mouse_position.clone())
+                } else {
+                    UpdateResult::NoOp
+                }
+            }
+            _ => UpdateResult::NoOp,
+        };
+        let pos = &self.mouse_position;
+        for current in [
+            &mut self.female_warrior,
+            &mut self.female_wizard,
+            &mut self.female_rogue,
+            &mut self.female_ranger,
+            &mut self.male_warrior,
+            &mut self.male_wizard,
+            &mut self.male_rogue,
+            &mut self.male_ranger,
+        ]
+            .iter_mut()
+            {
+                match (
+                    current.is_selected(),
+                    current.check_is_inside(&(pos.x as i32), &(pos.y as i32)),
+                ) {
+                    (false, true) => current.set_mouse_above(),
+                    (false, false) => current.set_normal(),
+                    _ => (),
+                };
+            };
+        res
     }
 }

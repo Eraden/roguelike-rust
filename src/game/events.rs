@@ -1,5 +1,6 @@
 use game::sprites::Gender;
 use game::sprites::PlayerClass;
+use game::MousePosition;
 
 #[derive(Debug, PartialEq)]
 pub enum UpdateResult {
@@ -8,4 +9,5 @@ pub enum UpdateResult {
     StartFirstMap,
     PickCharacter,
     PlayerCharacterClicked(PlayerClass, Gender),
+    AboveButton(MousePosition),
 }

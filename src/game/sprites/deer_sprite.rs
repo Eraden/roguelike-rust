@@ -42,22 +42,20 @@ impl<'a> DeerSprite<'a> {
     }
 
     pub fn new_female(main_renderer: &mut MainRenderer<'a, 'a>) -> Self {
-        Self::new(
-            main_renderer,
-            Gender::Female,
-        )
+        Self::new(main_renderer, Gender::Female)
     }
 
     pub fn new_male(main_renderer: &mut MainRenderer<'a, 'a>) -> Self {
-        Self::new(
-            main_renderer,
-            Gender::Male,
-        )
+        Self::new(main_renderer, Gender::Male)
     }
 
     pub fn resize(&mut self, size: &u32) {
         self.renderable.dest_size = size.clone() as i32;
         self.renderable.dest = Rect::new(0, 0, size.clone(), size.clone());
+    }
+
+    pub fn gender(&self) -> Gender {
+        self.gender.clone()
     }
 
     fn resolve_y(&self, animation: &Animation) -> i32 {

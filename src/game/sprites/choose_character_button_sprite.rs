@@ -50,7 +50,6 @@ impl<'a> ChooseCharacterButtonBackground<'a> {
                 self.animatable.animate(&0, 0, &mut self.renderable.source);
                 self.renderable.source.set_y(0);
             }
-            _ => {}
         }
     }
 
@@ -118,9 +117,12 @@ impl<'a> ChooseCharacterButtonSprite<'a> {
     }
 
     pub fn on_update(&mut self, chosen: (&PlayerClass, &Gender)) -> UpdateResult {
-        match (*chosen.0 == self.player_class, *chosen.1 == self.character_sprite.gender) {
+        match (
+            *chosen.0 == self.player_class,
+            *chosen.1 == self.character_sprite.gender,
+        ) {
             (true, true) => self.background.change_state(ButtonState::Selected),
-            _ => (),
+            _ => self.background.change_state(ButtonState::Normal),
         }
         UpdateResult::NoOp
     }

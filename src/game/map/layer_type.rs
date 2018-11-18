@@ -31,6 +31,7 @@ impl LayerType {
             LayerType::Animals => "Animals",
             LayerType::Players => "Players",
             LayerType::Roofs => "Roofs",
-        }.to_string()
+        }
+        .to_string()
     }
 }

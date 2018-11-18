@@ -26,21 +26,24 @@ fn main() {
                 .possible_values(&possible_layers)
                 .empty_values(true)
                 .multiple(true),
-        ).arg(
+        )
+        .arg(
             Arg::with_name("width")
                 .required(true)
                 .short("w")
                 .long("width")
                 .help("map width")
                 .takes_value(true),
-        ).arg(
+        )
+        .arg(
             Arg::with_name("height")
                 .required(true)
                 .short("h")
                 .long("height")
                 .help("map height")
                 .takes_value(true),
-        ).arg(
+        )
+        .arg(
             Arg::with_name("name")
                 .required(true)
                 .short("n")
@@ -48,7 +51,8 @@ fn main() {
                 .help("map name")
                 .takes_value(true)
                 .index(1),
-        ).author("Adrian Woźniak")
+        )
+        .author("Adrian Woźniak")
         .get_matches();
 
     let layers = matches.values_of("layers").unwrap().collect();

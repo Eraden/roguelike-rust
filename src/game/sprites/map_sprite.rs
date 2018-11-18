@@ -88,7 +88,8 @@ impl<'a> MapSprite<'a> {
             .ok_or(Ok::<Layer, TileTypeErr>(Layer {
                 layer_type: LayerType::Players,
                 tiles: Vec::new(),
-            })).unwrap()
+            }))
+            .unwrap()
             .tiles
             .into_iter()
             .enumerate()
@@ -103,7 +104,8 @@ impl<'a> MapSprite<'a> {
             .ok_or(Ok::<Layer, TileTypeErr>(Layer {
                 layer_type: LayerType::Roofs,
                 tiles: Vec::new(),
-            })).unwrap()
+            }))
+            .unwrap()
             .tiles
             .into_iter()
             .enumerate()

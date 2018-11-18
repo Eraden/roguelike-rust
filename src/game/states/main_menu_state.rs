@@ -49,12 +49,11 @@ impl<'a> State<'a> for MainMenuState<'a> {
 
     fn handle_click(&mut self, event: &Event) -> UpdateResult {
         match *event {
-            Event::MouseButtonDown { x, y, .. } =>
-                match (x, y) {
-                    _start if self.is_start_button(x,y) => UpdateResult::PickCharacter,
-                    _quit if self.is_quit_button(x, y) => UpdateResult::Stop,
-                    _ => UpdateResult::NoOp,
-                }
+            Event::MouseButtonDown { x, y, .. } => match (x, y) {
+                _start if self.is_start_button(x, y) => UpdateResult::PickCharacter,
+                _quit if self.is_quit_button(x, y) => UpdateResult::Stop,
+                _ => UpdateResult::NoOp,
+            },
             _ => UpdateResult::NoOp,
         }
     }

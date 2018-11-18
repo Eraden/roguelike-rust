@@ -135,7 +135,8 @@ impl<'a> Renderable<'a> {
                 None,
                 false,
                 false,
-            ).unwrap();
+            )
+            .unwrap();
     }
 
     pub fn dest_size(&self) -> i32 {

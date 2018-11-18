@@ -58,7 +58,8 @@ impl FromStr for Layer {
                     let m: String = meta.to_string();
                     let res: bool = m.ends_with(&s);
                     res
-                }).ok_or(LayerError::NoMatchingLayerType)?
+                })
+                .ok_or(LayerError::NoMatchingLayerType)?
                 .clone(),
         };
 

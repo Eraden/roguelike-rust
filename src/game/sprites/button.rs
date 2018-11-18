@@ -31,7 +31,12 @@ impl<'a> ButtonSprite<'a> {
 
         let background_width: u32 = generated.width + (TEXT_MARGIN * 2);
 
-        let text_dest = Rect::new(left + TEXT_MARGIN as i32, top - 5, generated.width, generated.height);
+        let text_dest = Rect::new(
+            left + TEXT_MARGIN as i32,
+            top - 5,
+            generated.width,
+            generated.height,
+        );
         let background_dest = Rect::new(left, top, background_width, 100);
 
         Self {
@@ -62,7 +67,12 @@ impl<'a> Sprite<'a> for ButtonSprite<'a> {
     fn update(&mut self, _ticks: i32) {}
 
     fn render(&mut self, canvas: &mut WindowCanvas, main_renderer: &mut MainRenderer<'a, 'a>) {
-        main_renderer.render_texture(canvas, &self.background_texture, self.background_source, self.background_dest);
+        main_renderer.render_texture(
+            canvas,
+            &self.background_texture,
+            self.background_source,
+            self.background_dest,
+        );
         main_renderer.render_texture(canvas, &self.text_texture, self.text_source, self.text_dest);
     }
 }

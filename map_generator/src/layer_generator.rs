@@ -29,7 +29,8 @@ fn stringify_stream(stream: &Vec<Vec<i32>>) -> String {
                 .map(|n| n.to_string())
                 .collect::<Vec<String>>()
                 .join(" ")
-        }).collect::<Vec<String>>()
+        })
+        .collect::<Vec<String>>()
         .join("\n")
 }
 
@@ -39,7 +40,8 @@ fn gen_rand(w: &i32, h: &i32, min: &i32, max: &i32) -> Vec<Vec<i32>> {
         repeat_with(|| rng.gen_range(*min, *max))
             .take(*w as usize)
             .collect::<Vec<i32>>()
-    }).take(*h as usize)
+    })
+    .take(*h as usize)
     .collect::<Vec<Vec<i32>>>()
 }
 

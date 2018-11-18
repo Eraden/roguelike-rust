@@ -1,9 +1,12 @@
 use game::config::Config;
 use game::managers::FontManager;
 use game::managers::TextureManager;
-use sdl2::render::TextureCreator;
+use game::app::WindowCanvas;
 use sdl2::ttf::Sdl2TtfContext;
 use sdl2::video::WindowContext;
+use sdl2::render::{Texture, TextureCreator};
+use sdl2::rect::Rect;
+use std::rc::Rc;
 
 pub struct Position {
     pub x: i32,
@@ -41,5 +44,18 @@ impl<'a, 'b> MainRenderer<'a, 'b> {
                 height: 40,
             },
         }
+    }
+
+    pub fn render_texture(&mut self, canvas: &mut WindowCanvas, texture: &Rc<Texture<'a>>, src: Rect, dest: Rect) {
+        canvas
+            .copy_ex(
+                texture,
+                Some(src.clone()),
+                Some(dest.clone()),
+                0.0,
+                None,
+                false,
+                false,
+            ).unwrap();
     }
 }

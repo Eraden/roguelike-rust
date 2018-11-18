@@ -8,6 +8,6 @@ pub enum UpdateResult {
     Stop,
     StartFirstMap,
     PickCharacter,
-    PlayerCharacterClicked(PlayerClass, Gender),
+    PlayerCharacterClicked((PlayerClass, Gender)),
     AboveButton(MousePosition),
 }

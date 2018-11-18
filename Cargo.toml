@@ -7,7 +7,7 @@ authors = ["Adrian Wozniak <adrian.wozniak@ita-prog.pl>"]
 rand = "0.5"
 
 [dependencies.sdl2]
-version = "*"
+version = "0.31.0"
 features = ["gfx", "image", "mixer", "ttf", "static-link", "bundled"]
 
 [workspace]

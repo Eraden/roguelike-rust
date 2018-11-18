@@ -27,6 +27,14 @@ impl<'a> MainMenuState<'a> {
             quit_button,
         }
     }
+
+    fn is_quit_button(&self, x: i32, y: i32) -> bool {
+        self.quit_button.is_inside(&x, &y)
+    }
+
+    fn is_start_button(&self, x: i32, y: i32) -> bool {
+        self.start_button.is_inside(&x, &y)
+    }
 }
 
 impl<'a> State<'a> for MainMenuState<'a> {
@@ -41,14 +49,12 @@ impl<'a> State<'a> for MainMenuState<'a> {
 
     fn handle_click(&mut self, event: &Event) -> UpdateResult {
         match *event {
-            Event::MouseButtonDown { x, y, .. } => if self.quit_button.is_inside(&x, &y) {
-                UpdateResult::Stop
-            } else if self.start_button.is_inside(&x, &y) {
-                //                UpdateResult::StartFirstMap
-                UpdateResult::PickCharacter
-            } else {
-                UpdateResult::NoOp
-            },
+            Event::MouseButtonDown { x, y, .. } =>
+                match (x, y) {
+                    _start if self.is_start_button(x,y) => UpdateResult::PickCharacter,
+                    _quit if self.is_quit_button(x, y) => UpdateResult::Stop,
+                    _ => UpdateResult::NoOp,
+                }
             _ => UpdateResult::NoOp,
         }
     }

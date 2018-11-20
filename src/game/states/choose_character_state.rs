@@ -159,7 +159,10 @@ impl<'a> ChooseCharacterState<'a> {
         self.continue_button.is_inside(&x, &y)
     }
 
-    fn button_with_type(&mut self, button_type: &(PlayerClass, Gender)) -> &mut ChooseCharacterButtonSprite<'a> {
+    fn button_with_type(
+        &mut self,
+        button_type: &(PlayerClass, Gender),
+    ) -> &mut ChooseCharacterButtonSprite<'a> {
         match button_type.clone() {
             (PlayerClass::Warrior, Gender::Female) => &mut self.female_warrior,
             (PlayerClass::Wizard, Gender::Female) => &mut self.female_wizard,
@@ -256,7 +259,7 @@ impl<'a> State<'a> for ChooseCharacterState<'a> {
     fn handle_mouse_move(&mut self, event: &Event) -> UpdateResult {
         if self.move_check > 0 {
             self.move_check -= 1;
-            return UpdateResult::NoOp
+            return UpdateResult::NoOp;
         }
         self.move_check = DEFAULT_MOVE_CHECK.clone();
         let res = match event {
@@ -268,24 +271,33 @@ impl<'a> State<'a> for ChooseCharacterState<'a> {
                     }
                 }
                 match (x, y) {
-                    _female_warrior if self.is_female_warrior(x.clone(), y.clone()) =>
-                        UpdateResult::AboveButton(self.female_warrior.get_type()),
-                    _female_wizard if self.is_female_wizard(x.clone(), y.clone()) =>
-                        UpdateResult::AboveButton(self.female_wizard.get_type()),
-                    _female_ranger if self.is_female_ranger(x.clone(), y.clone()) =>
-                        UpdateResult::AboveButton(self.female_ranger.get_type()),
-                    _female_rogue if self.is_female_rogue(x.clone(), y.clone()) =>
-                        UpdateResult::AboveButton(self.female_rogue.get_type()),
-                    _male_warrior if self.is_male_warrior(x.clone(), y.clone()) =>
-                        UpdateResult::AboveButton(self.male_warrior.get_type()),
-                    _male_wizard if self.is_male_wizard(x.clone(), y.clone()) =>
-                        UpdateResult::AboveButton(self.male_wizard.get_type()),
-                    _male_ranger if self.is_male_ranger(x.clone(), y.clone()) =>
-                        UpdateResult::AboveButton(self.male_ranger.get_type()),
-                    _male_rogue if self.is_male_rogue(x.clone(), y.clone()) =>
-                        UpdateResult::AboveButton(self.male_rogue.get_type()),
-                    _continue_button if self.continue_button.is_inside(&x, &y) =>
-                        UpdateResult::NoOp,
+                    _female_warrior if self.is_female_warrior(x.clone(), y.clone()) => {
+                        UpdateResult::AboveButton(self.female_warrior.get_type())
+                    }
+                    _female_wizard if self.is_female_wizard(x.clone(), y.clone()) => {
+                        UpdateResult::AboveButton(self.female_wizard.get_type())
+                    }
+                    _female_ranger if self.is_female_ranger(x.clone(), y.clone()) => {
+                        UpdateResult::AboveButton(self.female_ranger.get_type())
+                    }
+                    _female_rogue if self.is_female_rogue(x.clone(), y.clone()) => {
+                        UpdateResult::AboveButton(self.female_rogue.get_type())
+                    }
+                    _male_warrior if self.is_male_warrior(x.clone(), y.clone()) => {
+                        UpdateResult::AboveButton(self.male_warrior.get_type())
+                    }
+                    _male_wizard if self.is_male_wizard(x.clone(), y.clone()) => {
+                        UpdateResult::AboveButton(self.male_wizard.get_type())
+                    }
+                    _male_ranger if self.is_male_ranger(x.clone(), y.clone()) => {
+                        UpdateResult::AboveButton(self.male_ranger.get_type())
+                    }
+                    _male_rogue if self.is_male_rogue(x.clone(), y.clone()) => {
+                        UpdateResult::AboveButton(self.male_rogue.get_type())
+                    }
+                    _continue_button if self.continue_button.is_inside(&x, &y) => {
+                        UpdateResult::NoOp
+                    }
                     _ => UpdateResult::NoOp,
                 }
             }

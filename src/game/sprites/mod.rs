@@ -165,6 +165,7 @@ pub trait RenderPosition {
     fn move_to(&mut self, x: i32, y: i32);
 }
 
+#[inline]
 fn check_is_inside(x: &i32, y: &i32, rect: &Rect) -> bool {
     let xs: i32 = rect.x();
     let xe: i32 = xs + rect.width() as i32;

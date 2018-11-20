@@ -112,6 +112,7 @@ impl<'a> ChooseCharacterButtonSprite<'a> {
         }
     }
 
+    #[inline]
     pub fn check_is_inside(&self, x: &i32, y: &i32) -> bool {
         check_is_inside(x, y, &self.background.renderable.dest)
     }
@@ -148,6 +149,10 @@ impl<'a> ChooseCharacterButtonSprite<'a> {
 
     pub fn set_mouse_above(&mut self) {
         self.background.change_state(ButtonState::MouseOver);
+    }
+
+    pub fn set_selected(&mut self) {
+        self.background.change_state(ButtonState::Selected);
     }
 }
 

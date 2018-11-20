@@ -1,6 +1,7 @@
 #![feature(type_ascription)]
 #![feature(range_contains)]
 extern crate sdl2;
+extern crate core;
 
 pub mod game;
 
